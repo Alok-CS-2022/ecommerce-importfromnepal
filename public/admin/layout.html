@@ -1,0 +1,110 @@
+<!-- Admin Layout Component - include this in all admin pages -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Import From Nepal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .sidebar-link {
+            @apply flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-700 transition;
+        }
+        .sidebar-link.active {
+            @apply bg-blue-600 text-white border-l-4 border-orange-500;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Top Navigation -->
+    <nav class="bg-gray-900 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-orange-400">
+                    Import From Nepal
+                </h1>
+                <span class="text-gray-400 text-sm">Admin Panel</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <span id="admin-user" class="text-gray-400">Admin</span>
+                <a href="/" class="text-gray-400 hover:text-white transition">View Site</a>
+                <button onclick="logout()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded transition">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-800 min-h-screen shadow-lg">
+            <nav class="pt-4">
+                <a href="/admin/dashboard.html" class="sidebar-link dashboard-link">
+                    <span>📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/admin/products.html" class="sidebar-link products-link">
+                    <span>📦</span>
+                    <span>Products</span>
+                </a>
+                <a href="/admin/categories.html" class="sidebar-link categories-link">
+                    <span>📂</span>
+                    <span>Categories</span>
+                </a>
+                <a href="/admin/orders.html" class="sidebar-link orders-link">
+                    <span>🛒</span>
+                    <span>Orders</span>
+                </a>
+                <a href="/admin/content.html" class="sidebar-link content-link">
+                    <span>✏️</span>
+                    <span>Content</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <!-- Content will be inserted here -->
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="fixed bottom-4 right-4 space-y-2 z-50"></div>
+
+    <script>
+        // Highlight active nav link
+        function setActiveNav(page) {
+            document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+            document.querySelector(`.${page}-link`)?.classList.add('active');
+        }
+
+        // Toast notifications
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `px-4 py-3 rounded shadow-lg text-white ${
+                type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600'
+            }`;
+            toast.textContent = message;
+            document.getElementById('toast-container').appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Logout function
+        async function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear local storage and redirect
+                localStorage.removeItem('admin_token');
+                window.location.href = '/admin/login.html';
+            }
+        }
+
+        // Check admin auth on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const adminToken = localStorage.getItem('admin_token');
+            if (!adminToken && !window.location.pathname.includes('login.html')) {
+                window.location.href = '/admin/login.html';
+            }
+        });
+    </script>
+</body>
+</html>

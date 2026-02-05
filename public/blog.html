@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Import From Nepal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/custom.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-30N5XW6E4C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-30N5XW6E4C');
+    </script>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-14 sm:h-16">
+                <div class="flex items-center site-logo-container">
+                    <a href="index.html"
+                        class="text-base sm:text-xl md:text-2xl font-bold text-amber-700 leading-tight">Import From
+                        Nepal</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-6 lg:space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-amber-700 transition">Home</a>
+                    <a href="products.html" class="text-gray-700 hover:text-amber-700 transition">Products</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-amber-700 transition">Contact</a>
+                    <a href="blog.html" class="text-amber-700 font-semibold transition">Blog</a>
+                </div>
+
+                <!-- Right side icons -->
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <button onclick="openCart()" class="relative p-2 hover:bg-gray-100 rounded-full transition">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                        <span id="cart-count"
+                            class="hidden absolute -top-1 -right-1 bg-amber-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-light text-gray-900 mb-4">Craftsman Chronicles</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Stories from the artisans, insights into Nepalese
+                craftsmanship, and the cultural heritage behind every piece.</p>
+        </div>
+
+        <!-- Blog Posts Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-full-grid">
+            <!-- Loading Skeleton -->
+            <div class="bg-gray-100 rounded-2xl h-96 animate-pulse"></div>
+            <div class="bg-gray-100 rounded-2xl h-96 animate-pulse"></div>
+            <div class="bg-gray-100 rounded-2xl h-96 animate-pulse"></div>
+        </div>
+
+        <!-- Coming Soon Message -->
+        <div class="text-center mt-16">
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-8 max-w-2xl mx-auto">
+                <h3 class="text-2xl font-light text-amber-900 mb-4">More Stories Coming Soon</h3>
+                <p class="text-amber-700">We're working on bringing you more authentic stories from Nepalese artisans
+                    and their craft. Stay tuned!</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-amber-500">Import From Nepal</h3>
+                    <p class="text-gray-400 text-sm" id="footer-about-text">Bringing authentic Himalayan handicrafts to
+                        the world.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="index.html" class="hover:text-amber-500 transition">Home</a></li>
+                        <li><a href="products.html" class="hover:text-amber-500 transition">Products</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-500 transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Connect</h3>
+                    <div id="footer-social-links" class="flex gap-3">
+                        <!-- Social links will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400 text-sm" id="footer-copyright-text">© 2025 Import From Nepal. All rights
+                    reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/ui.js"></script>
+    <script type="module" src="js/app.js"></script>
+    <script type="module">
+        import { loadSiteContent } from './js/content-loader.js';
+
+        // Initialize content loader
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSiteContent();
+            if (window.initScrollReveal) window.initScrollReveal();
+        });
+    </script>
+</body>
+
+</html>

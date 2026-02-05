@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Admin - Import From Nepal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="api-config.js"></script>
+    <style>
+        .sidebar-link {
+            @apply flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-700 transition;
+        }
+        .sidebar-link.active {
+            @apply bg-blue-600 text-white border-l-4 border-orange-500;
+        }
+        .stat-card {
+            @apply bg-white rounded-lg shadow p-6 border-l-4;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Top Navigation -->
+    <nav class="bg-gray-900 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-orange-400">
+                    Import From Nepal
+                </h1>
+                <span class="text-gray-400 text-sm">Admin Panel</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <span id="admin-user" class="text-gray-400">Admin</span>
+                <a href="/" class="text-gray-400 hover:text-white transition">View Site</a>
+                <button onclick="logout()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded transition">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-800 min-h-screen shadow-lg">
+            <nav class="pt-4">
+                <a href="dashboard.html" class="sidebar-link dashboard-link active">
+                    <span>📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="products.html" class="sidebar-link products-link">
+                    <span>📦</span>
+                    <span>Products</span>
+                </a>
+                <a href="categories.html" class="sidebar-link categories-link">
+                    <span>📂</span>
+                    <span>Categories</span>
+                </a>
+                <a href="orders.html" class="sidebar-link orders-link">
+                    <span>🛒</span>
+                    <span>Orders</span>
+                </a>
+                <a href="content.html" class="sidebar-link content-link">
+                    <span>✏️</span>
+                    <span>Content</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <h2 class="text-3xl font-bold mb-8 text-gray-800">Dashboard</h2>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="stat-card border-blue-500">
+                    <div class="text-gray-500 text-sm font-semibold">TOTAL PRODUCTS</div>
+                    <div id="stat-products" class="text-4xl font-bold text-blue-600 mt-2">0</div>
+                    <div class="text-gray-400 text-xs mt-2">Active products</div>
+                </div>
+
+                <div class="stat-card border-green-500">
+                    <div class="text-gray-500 text-sm font-semibold">TOTAL ORDERS</div>
+                    <div id="stat-orders" class="text-4xl font-bold text-green-600 mt-2">0</div>
+                    <div class="text-gray-400 text-xs mt-2">All time</div>
+                </div>
+
+                <div class="stat-card border-orange-500">
+                    <div class="text-gray-500 text-sm font-semibold">PENDING ORDERS</div>
+                    <div id="stat-pending" class="text-4xl font-bold text-orange-600 mt-2">0</div>
+                    <div class="text-gray-400 text-xs mt-2">Awaiting action</div>
+                </div>
+
+                <div class="stat-card border-purple-500">
+                    <div class="text-gray-500 text-sm font-semibold">CATEGORIES</div>
+                    <div id="stat-categories" class="text-4xl font-bold text-purple-600 mt-2">0</div>
+                    <div class="text-gray-400 text-xs mt-2">Total categories</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <a href="products.html" class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition border-t-4 border-blue-500">
+                    <h3 class="text-xl font-bold mb-2">📦</h3>
+                    <h4 class="font-semibold mb-2">Manage Products</h4>
+                    <p class="text-gray-600 text-sm">Add, edit, or delete products</p>
+                </a>
+
+                <a href="categories.html" class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition border-t-4 border-purple-500">
+                    <h3 class="text-xl font-bold mb-2">📂</h3>
+                    <h4 class="font-semibold mb-2">Manage Categories</h4>
+                    <p class="text-gray-600 text-sm">Create and organize categories</p>
+                </a>
+
+                <a href="orders.html" class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition border-t-4 border-green-500">
+                    <h3 class="text-xl font-bold mb-2">🛒</h3>
+                    <h4 class="font-semibold mb-2">View Orders</h4>
+                    <p class="text-gray-600 text-sm">Manage and track customer orders</p>
+                </a>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-2xl font-bold mb-4">Recent Orders</h3>
+                <div id="recent-orders" class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Order ID</th>
+                                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Customer</th>
+                                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Email</th>
+                                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Total</th>
+                                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Status</th>
+                                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-table" class="divide-y">
+                            <tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <a href="orders.html" class="text-blue-600 hover:text-blue-800 mt-4 inline-block font-semibold">View All Orders →</a>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-4 right-4 space-y-2 z-50"></div>
+
+    <script>
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `px-4 py-3 rounded shadow-lg text-white ${
+                type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600'
+            }`;
+            toast.textContent = message;
+            document.getElementById('toast-container').appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('admin_token');
+                window.location.href = '/admin/login.html';
+            }
+        }
+
+        async function loadStats() {
+            try {
+                // Load products count
+                const productsRes = await fetch(apiUrl('/api/admin/products'));
+                if (productsRes.ok) {
+                    const products = await productsRes.json();
+                    document.getElementById('stat-products').textContent = products.length || 0;
+                }
+
+                // Load categories count
+                const categoriesRes = await fetch(apiUrl('/api/admin/categories'));
+                if (categoriesRes.ok) {
+                    const categories = await categoriesRes.json();
+                    document.getElementById('stat-categories').textContent = categories.length || 0;
+                }
+
+                // Load orders
+                const ordersRes = await fetch(apiUrl('/api/admin/orders'));
+                if (ordersRes.ok) {
+                    const orders = await ordersRes.json();
+                    const pending = orders.filter(o => o.status === 'pending').length;
+                    document.getElementById('stat-orders').textContent = orders.length || 0;
+                    document.getElementById('stat-pending').textContent = pending || 0;
+                    
+                    // Show recent orders
+                    const recentOrders = orders.slice(0, 5);
+                    const tbody = document.getElementById('orders-table');
+                    if (recentOrders.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No orders yet</td></tr>';
+                    } else {
+                        tbody.innerHTML = recentOrders.map(order => `
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 text-sm">#${String(order.id).substring(0, 8)}</td>
+                                <td class="px-4 py-3 text-sm">${order.customer_name || 'N/A'}</td>
+                                <td class="px-4 py-3 text-sm">${order.customer_email || 'N/A'}</td>
+                                <td class="px-4 py-3 text-sm font-semibold">$${(order.total_amount || 0).toFixed(2)}</td>
+                                <td class="px-4 py-3 text-sm">
+                                    <span class="px-2 py-1 rounded text-xs font-semibold ${
+                                        order.status === 'pending' ? 'bg-orange-100 text-orange-800' :
+                                        order.status === 'processing' ? 'bg-blue-100 text-blue-800' :
+                                        order.status === 'shipped' ? 'bg-purple-100 text-purple-800' :
+                                        'bg-green-100 text-green-800'
+                                    }">
+                                        ${order.status || 'pending'}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3 text-sm">${new Date(order.created_at).toLocaleDateString()}</td>
+                            </tr>
+                        `).join('');
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                showToast('Error loading dashboard data', 'error');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadStats();
+            // Refresh stats every 30 seconds
+            setInterval(loadStats, 30000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisan Vault - Secure Access</title>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="ac82397e-0bc4-4fe6-bac5-42f6b962b391"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-30N5XW6E4C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-30N5XW6E4C');
+</script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+        
+        .animate-fadeIn { animation: fadeIn 0.8s ease-out; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        
+        .gold-gradient {
+            background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(217, 119, 6, 0.2);
+        }
+        
+        .shimmer-line {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .shimmer-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        input:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(217, 119, 6, 0.2);
+        }
+        
+        ::placeholder {
+            color: #9CA3AF;
+            font-weight: 300;
+        }
+        
+        /* Animated background orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: pulse 8s ease-in-out infinite;
+        }
+        
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: #D97706;
+            top: -10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+        
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: #F59E0B;
+            bottom: -10%;
+            right: -10%;
+            animation-delay: 2s;
+        }
+        
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: #B45309;
+            top: 50%;
+            left: 50%;
+            animation-delay: 4s;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-stone-900 via-amber-900 to-stone-900 flex items-center justify-center p-6 relative overflow-hidden">
+    
+    <!-- Animated Background Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    
+    <!-- Main Login Card -->
+    <div class="glass rounded-3xl shadow-2xl w-full max-w-md relative z-10 animate-fadeIn">
+        
+        <!-- Header with Logo -->
+        <div class="text-center pt-12 pb-8 px-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 gold-gradient rounded-2xl shadow-xl mb-6 animate-float">
+                <span class="text-4xl">🎨</span>
+            </div>
+            <h1 class="text-4xl font-light text-gray-900 mb-2 tracking-tight">Artisan Vault</h1>
+            <p class="text-gray-600 font-light">Secure Administration Portal</p>
+        </div>
+        
+        <!-- Alerts -->
+        <div class="px-8 mb-4">
+            <div id="error-message" class="hidden bg-red-50 border-l-4 border-red-500 text-red-800 px-5 py-4 rounded-lg mb-4 animate-fadeIn">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"/>
+                    </svg>
+                    <span id="error-text"></span>
+                </div>
+            </div>
+            
+            <div id="loading" class="hidden text-center py-4 animate-fadeIn">
+                <div class="inline-flex items-center gap-3 px-6 py-3 bg-amber-50 rounded-lg">
+                    <svg class="animate-spin h-5 w-5 text-amber-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span class="text-amber-900 font-medium">Authenticating...</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Login Form -->
+        <form id="login-form" class="px-8 pb-12 space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+                        </svg>
+                    </div>
+                     <input type="email" id="email" placeholder="admin@artisanvault.com" required
+                           class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-amber-500 transition-all font-light text-lg"
+                           placeholder="admin@artisanvault.com">
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                     <input type="password" id="password" placeholder="••••••••" required
+                           class="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-amber-500 transition-all font-light text-lg"
+                           placeholder="••••••••">
+                </div>
+            </div>
+            
+            <button type="submit" id="login-btn" 
+                    class="w-full gold-gradient text-white py-4 rounded-xl font-medium text-lg shadow-xl hover:shadow-2xl transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+                <span class="shimmer-line">Access Vault</span>
+            </button>
+            
+            <div class="text-center">
+                <a href="../index.html" class="text-sm text-gray-600 hover:text-amber-700 transition font-light inline-flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Back to Website
+                </a>
+            </div>
+        </form>
+        
+        <!-- Debug Panel (can be hidden in production) -->
+        <div id="debug-info" class="mx-8 mb-8 p-4 bg-gray-50 rounded-xl border border-gray-200">
+            <div class="flex items-center gap-2 mb-2">
+                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span class="text-xs font-medium text-gray-700">System Status</span>
+            </div>
+            <div class="space-y-1 text-xs font-mono text-gray-600">
+                <div>Connection: <span id="status" class="text-green-600 font-semibold">Active</span></div>
+                <div>Last Action: <span id="debug-error" class="text-gray-800">Awaiting login</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Elements -->
+    <div class="fixed top-8 right-8 text-white/20 text-6xl font-light animate-float" style="animation-delay: 1s;">🇳🇵</div>
+    <div class="fixed bottom-8 left-8 text-white/20 text-6xl font-light animate-float" style="animation-delay: 3s;">✨</div>
+
+    <script type="module">
+
+        const form = document.getElementById('login-form')
+        const errorDiv = document.getElementById('error-message')
+        const errorText = document.getElementById('error-text')
+        const loadingDiv = document.getElementById('loading')
+        const loginBtn = document.getElementById('login-btn')
+        const statusSpan = document.getElementById('status')
+        const debugError = document.getElementById('debug-error')
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault()
+            
+            const email = document.getElementById('email').value.trim()
+            const password = document.getElementById('password').value
+            
+            statusSpan.textContent = 'Authenticating...'
+            statusSpan.className = 'text-amber-600 font-semibold'
+            debugError.textContent = 'Contacting server...'
+
+            errorDiv.classList.add('hidden')
+            loadingDiv.classList.remove('hidden')
+            loginBtn.disabled = true
+
+            try {
+                // Use admin auth API
+                const response = await fetch('/api/admin/auth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                })
+
+                const result = await response.json()
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.error || 'Authentication failed')
+                }
+
+                // Store token and redirect
+                localStorage.setItem('admin_token', result.token)
+                localStorage.setItem('admin_user', JSON.stringify(result.user))
+
+                statusSpan.textContent = 'Authorized'
+                statusSpan.className = 'text-green-600 font-semibold'
+                debugError.textContent = 'Redirecting to dashboard...'
+
+                // Smooth redirect after brief delay
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html'
+                }, 500)
+                
+            } catch (err) {
+                console.error('💥 Unexpected error:', err)
+                errorText.textContent = `System error: ${err.message}`
+                errorDiv.classList.remove('hidden')
+                debugError.textContent = err.message
+                statusSpan.textContent = 'Error'
+                statusSpan.className = 'text-red-600 font-semibold'
+                loginBtn.disabled = false
+                loadingDiv.classList.add('hidden')
+            }
+        })
+        
+        // Check if already logged in
+        const existingToken = localStorage.getItem('admin_token')
+        if (existingToken) {
+            statusSpan.textContent = 'Authorized'
+            statusSpan.className = 'text-green-600 font-semibold'
+            debugError.textContent = 'Token active, redirecting...'
+            window.location.href = 'dashboard.html'
+        } else {
+            debugError.textContent = 'Awaiting login'
+        }
+    </script>
+</body>
+</html>

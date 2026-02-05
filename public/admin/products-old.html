@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisan Vault - Product Studio</title>
+    <!-- Cache bust: v2 - Force redeploy -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-30N5XW6E4C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-30N5XW6E4C');
+    </script>
+    <script defer src="https://cloud.umami.is/script.js"
+        data-website-id="ac82397e-0bc4-4fe6-bac5-42f6b962b391"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .animate-slideIn {
+            animation: slideIn 0.4s ease-out;
+        }
+
+        /* Premium gradient backgrounds */
+        .premium-gradient {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
+        }
+
+        /* Glass effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* Card hover effect */
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(217, 119, 6, 0.3);
+        }
+
+        /* Smooth transitions */
+        * {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #D97706;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #B45309;
+        }
+
+        /* Image preview animation */
+        .image-preview {
+            transition: all 0.3s ease;
+        }
+
+        .image-preview:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-stone-50 to-amber-50 min-h-screen">
+
+    <!-- Premium Header -->
+    <nav class="premium-gradient text-white shadow-2xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 gold-gradient rounded-lg flex items-center justify-center shadow-lg">
+                        <span class="text-2xl">🎨</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-light tracking-tight">Artisan Vault</h1>
+                        <p class="text-xs text-gray-400 font-light">Product Studio</p>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="flex items-center gap-6">
+                    <a href="dashboard.html" class="text-gray-300 hover:text-white transition font-light">Dashboard</a>
+                    <a href="order.html" class="text-gray-300 hover:text-white transition font-light">Orders</a>
+                    <a href="../index.html" target="_blank"
+                        class="gold-gradient px-5 py-2.5 rounded-lg font-medium text-white hover:shadow-lg transition">
+                        View Live Site
+                    </a>
+                    <button onclick="logout()"
+                        class="bg-red-600 hover:bg-red-700 px-5 py-2.5 rounded-lg font-medium transition">
+                        Sign Out
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-6 py-12">
+
+        <!-- Alerts -->
+        <div id="error-banner"
+            class="hidden bg-red-50 border-l-4 border-red-500 text-red-800 px-6 py-4 rounded-lg mb-6 shadow-md animate-fadeIn">
+        </div>
+        <div id="success-banner"
+            class="hidden bg-green-50 border-l-4 border-green-500 text-green-800 px-6 py-4 rounded-lg mb-6 shadow-md animate-fadeIn">
+        </div>
+
+        <!-- Header Section -->
+        <div class="mb-12 animate-fadeIn">
+            <div class="flex justify-between items-end">
+                <div>
+                    <h2 class="text-5xl font-light text-gray-900 mb-2">Product Collection</h2>
+                    <p class="text-gray-600 font-light text-lg">Curate your handcrafted masterpieces</p>
+                </div>
+                 <button id="add-product-btn"
+                     class="group gold-gradient text-white px-8 py-4 rounded-xl font-medium shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+                     <span class="flex items-center gap-2">
+                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                         </svg>
+                         Create Masterpiece
+                     </span>
+                 </button>
+            </div>
+        </div>
+
+        <!-- Management Tabs -->
+        <div class="flex gap-1 mb-8 border-b border-gray-200">
+            <button id="products-tab" onclick="switchTab('products')"
+                class="px-6 py-3 text-sm font-medium border-b-2 border-amber-500 text-amber-700 bg-amber-50 rounded-t-lg">
+                Products
+            </button>
+            <button id="categories-tab" onclick="switchTab('categories')"
+                class="px-6 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 rounded-t-lg">
+                Categories
+            </button>
+            <button id="featured-tab" onclick="switchTab('featured')"
+                class="px-6 py-3 text-sm font-medium text-gray-500 hover:text-gray-700 rounded-t-lg">
+                Featured Products
+            </button>
+        </div>
+
+        <!-- Products Section -->
+        <div id="products-section">
+            <!-- Stats Bar -->
+            <div id="stats-bar" class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12 animate-slideIn">
+            <div class="glass p-6 rounded-2xl shadow-lg border border-amber-100">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600 font-light">Total Products</p>
+                        <p id="total-count" class="text-3xl font-light text-gray-900">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass p-6 rounded-2xl shadow-lg border border-amber-100">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600 font-light">Categories</p>
+                        <p id="category-count" class="text-3xl font-light text-gray-900">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass p-6 rounded-2xl shadow-lg border border-amber-100">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600 font-light">Last Updated</p>
+                        <p id="last-updated" class="text-lg font-light text-gray-900">Just now</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass p-6 rounded-2xl shadow-lg border border-amber-100">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600 font-light">Status</p>
+                        <p class="text-lg font-light text-green-600">Active</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="products-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="col-span-full flex flex-col items-center justify-center py-20 text-gray-400">
+                <svg class="w-20 h-20 mb-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+                <p class="text-lg font-light">Loading artisan collection...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Modal -->
+    <div id="product-modal"
+        class="hidden fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="glass rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden animate-fadeIn">
+            <!-- Modal Header -->
+            <div class="premium-gradient text-white p-8">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 id="modal-title" class="text-3xl font-light tracking-tight">Create Masterpiece</h2>
+                        <p class="text-gray-400 font-light mt-1">Add authentic craftsmanship to your collection</p>
+                    </div>
+                    <button id="close-modal-btn"
+                        class="text-gray-400 hover:text-white transition text-3xl w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10">×</button>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-8 overflow-y-auto max-h-[calc(90vh-180px)]">
+                <form id="product-form" class="space-y-6">
+                    <input type="hidden" id="product-id">
+
+                    <!-- Image Preview -->
+                    <div id="image-preview-container" class="hidden mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Preview</label>
+                        <div class="relative rounded-2xl overflow-hidden shadow-lg">
+                            <img id="image-preview" src="" alt="Preview" class="w-full h-64 object-cover image-preview">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Product Name</label>
+                        <input type="text" id="product-name" required
+                            class="w-full px-5 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-amber-500 transition font-light text-lg"
+                            placeholder="Handwoven Pashmina Shawl">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <textarea id="product-description" rows="4" required
+                            class="w-full px-5 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-amber-500 transition font-light resize-none"
+                            placeholder="Describe the craftsmanship, materials, and story behind this piece..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
+
+                        <!-- File Upload Area -->
+                        <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 hover:border-amber-500 transition-colors text-center cursor-pointer mb-3"
+                            onclick="document.getElementById('file-upload').click()" id="drop-zone">
+
+                            <div id="upload-placeholder" class="space-y-2">
+                                <svg class="w-12 h-12 text-gray-400 mx-auto" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                                <p class="text-gray-600">Click to upload or drag and drop</p>
+                                <p class="text-xs text-gray-400">PNG, JPG, WEBP up to 2MB</p>
+                            </div>
+
+                            <div id="upload-loading" class="hidden">
+                                <svg class="animate-spin h-8 w-8 text-amber-600 mx-auto"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                                <p class="text-amber-800 mt-2 text-sm font-medium">Uploading to secure vault...</p>
+                            </div>
+                        </div>
+
+                        <input type="file" id="file-upload" class="hidden" accept="image/*"
+                            onchange="handleFileUpload(this)">
+                        <input type="hidden" id="product-image" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                        <select id="product-category" required
+                            class="w-full px-5 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-amber-500 transition font-light text-lg">
+                            <option value="">Select a category...</option>
+                            <!-- Categories loaded dynamically -->
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Product Price</label>
+                        <input type="number" id="product-price" required
+                            class="w-full px-5 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-amber-500 transition font-light text-lg"
+                            placeholder="Enter price in USD">
+                    </div>
+
+                    <div class="bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" id="is-featured"
+                                class="w-5 h-5 text-amber-600 rounded focus:ring-amber-500">
+                            <div>
+                                <span class="text-sm font-semibold text-gray-900">⭐ Featured Product</span>
+                                <p class="text-xs text-gray-600">Show this product on the homepage (max 6)</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-4 pt-6">
+                        <button type="submit"
+                            class="flex-1 gold-gradient text-white py-4 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                            Save to Collection
+                        </button>
+                        <button type="button" id="cancel-btn"
+                            class="px-8 py-4 border-2 border-gray-300 rounded-xl hover:bg-gray-50 transition font-medium">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+        </div>
+
+        <!-- Categories Section -->
+        <div id="categories-section" class="hidden">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h3 class="text-3xl font-light text-gray-900 mb-2">Category Management</h3>
+                    <p class="text-gray-600 font-light">Organize your product categories</p>
+                </div>
+                <button onclick="openCategoryModal()"
+                    class="gold-gradient text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Add Category
+                    </span>
+                </button>
+            </div>
+
+            <div id="categories-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Categories will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Featured Products Section -->
+        <div id="featured-section" class="hidden">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h3 class="text-3xl font-light text-gray-900 mb-2">Featured Products</h3>
+                    <p class="text-gray-600 font-light">Products displayed on homepage (max 6)</p>
+                </div>
+            </div>
+
+            <div id="featured-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Featured products will be loaded here -->
+            </div>
+        </div>
+
+    <script>
+        function previewImage(url) {
+            const preview = document.getElementById('image-preview');
+            const container = document.getElementById('image-preview-container');
+
+            if (url && url.startsWith('http')) {
+                preview.src = url;
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { supabase } from '../lib/supabase.js'
+
+        function showError(msg) {
+            const banner = document.getElementById('error-banner')
+            banner.innerHTML = `<strong>Error:</strong> ${msg}`
+            banner.classList.remove('hidden')
+            setTimeout(() => banner.classList.add('hidden'), 5000)
+        }
+
+        function showSuccess(msg) {
+            const banner = document.getElementById('success-banner')
+            banner.innerHTML = `<strong>Success!</strong> ${msg}`
+            banner.classList.remove('hidden')
+            setTimeout(() => banner.classList.add('hidden'), 3000)
+        }
+
+        async function checkAuth() {
+            const token = localStorage.getItem('admin_token')
+            if (!token) {
+                window.location.href = 'login.html'
+                return false
+            }
+            return true
+        }
+
+        window.logout = async function () {
+            localStorage.removeItem('admin_token')
+            localStorage.removeItem('admin_user')
+            window.location.href = 'login.html'
+        }
+
+        // Tab switching functionality
+        window.switchTab = function(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('[id$="-tab"]').forEach(btn => {
+                btn.classList.remove('border-amber-500', 'text-amber-700', 'bg-amber-50')
+                btn.classList.add('text-gray-500')
+            })
+            document.getElementById(tabName + '-tab').classList.add('border-amber-500', 'text-amber-700', 'bg-amber-50')
+            document.getElementById(tabName + '-tab').classList.remove('text-gray-500')
+
+            // Hide all content sections
+            document.getElementById('products-section').classList.add('hidden')
+            document.getElementById('categories-section').classList.add('hidden')
+            document.getElementById('featured-section').classList.add('hidden')
+            document.getElementById('stats-bar').classList.add('hidden')
+
+            // Show selected content section
+            document.getElementById(tabName + '-section').classList.remove('hidden')
+            if (tabName === 'products') {
+                document.getElementById('stats-bar').classList.remove('hidden')
+            }
+
+            // Load content for the selected tab
+            if (tabName === 'categories') loadCategoriesList()
+            if (tabName === 'featured') loadFeaturedProducts()
+        }
+
+        // Load categories for management
+        async function loadCategoriesList() {
+            const container = document.getElementById('categories-container')
+            container.innerHTML = '<div class="col-span-full text-center py-12"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500 mx-auto"></div></div>'
+
+            try {
+                const response = await fetch('/api/admin/categories')
+                const categories = await response.json()
+
+                if (!response.ok) throw new Error('Failed to load categories')
+
+                if (categories.length === 0) {
+                    container.innerHTML = '<div class="col-span-full text-center py-12 text-gray-500">No categories found. Create your first category!</div>'
+                    return
+                }
+
+                container.innerHTML = categories.map(category => `
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-lg transition">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                ${category.image_url ? `<img src="${category.image_url}" alt="${category.name}" class="w-12 h-12 rounded-lg object-cover">` : '<div class="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">📁</div>'}
+                                <div>
+                                    <h3 class="font-semibold text-gray-900">${category.name}</h3>
+                                    <p class="text-sm text-gray-500">Order: ${category.display_order}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="editCategory('${category.id}')" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="deleteCategory('${category.id}')" class="p-2 text-red-600 hover:bg-red-50 rounded-lg">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Status: <span class="text-green-600">Active</span></span>
+                        </div>
+                    </div>
+                `).join('')
+            } catch (error) {
+                container.innerHTML = '<div class="col-span-full text-center py-12 text-red-500">Error loading categories: ' + error.message + '</div>'
+            }
+        }
+
+        // Load featured products for management
+        async function loadFeaturedProducts() {
+            const container = document.getElementById('featured-container')
+            container.innerHTML = '<div class="col-span-full text-center py-12"><div class="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500 mx-auto"></div></div>'
+
+            try {
+                const response = await fetch('/api/featured-products')
+                const featuredProducts = await response.json()
+
+                if (!response.ok) throw new Error('Failed to load featured products')
+
+                if (featuredProducts.length === 0) {
+                    container.innerHTML = '<div class="col-span-full text-center py-12 text-gray-500">No featured products. Mark products as featured to display them here!</div>'
+                    return
+                }
+
+                container.innerHTML = featuredProducts.map(product => `
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-lg transition">
+                        <div class="flex items-center gap-4 mb-4">
+                            ${product.image_url ? `<img src="${product.image_url}" alt="${product.name}" class="w-16 h-16 rounded-lg object-cover">` : '<div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">📦</div>'}
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-900">${product.name}</h3>
+                                <p class="text-sm text-gray-600">$${product.price}</p>
+                                <p class="text-xs text-gray-500">Order: ${product.display_order}</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="toggleFeatured('${product.id}')" class="flex-1 bg-amber-500 text-white py-2 rounded-lg hover:bg-amber-600 transition">
+                                Remove from Featured
+                            </button>
+                            <button onclick="updateDisplayOrder('${product.id}', ${product.display_order - 1})" class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                                ▲
+                            </button>
+                            <button onclick="updateDisplayOrder('${product.id}', ${product.display_order + 1})" class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                                ▼
+                            </button>
+                        </div>
+                    </div>
+                `).join('')
+            } catch (error) {
+                container.innerHTML = '<div class="col-span-full text-center py-12 text-red-500">Error loading featured products: ' + error.message + '</div>'
+            }
+        }
+
+        // Category management functions
+        window.openCategoryModal = function(categoryId = null) {
+            // TODO: Implement category modal
+            alert('Category management modal coming soon!')
+        }
+
+        window.editCategory = function(id) {
+            alert('Edit category functionality coming soon!')
+        }
+
+        window.deleteCategory = function(id) {
+            if (confirm('Delete this category? This may affect products.')) {
+                alert('Delete category functionality coming soon!')
+            }
+        }
+
+        // Featured products management functions
+        window.toggleFeatured = async function(productId) {
+            try {
+                const response = await fetch('/api/admin/products', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: productId, is_featured: false })
+                })
+
+                if (!response.ok) throw new Error('Failed to update product')
+
+                loadFeaturedProducts()
+                showSuccess('Product removed from featured')
+            } catch (error) {
+                showError('Failed to update featured status: ' + error.message)
+            }
+        }
+
+        window.updateDisplayOrder = async function(productId, newOrder) {
+            try {
+                const response = await fetch('/api/admin/products', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: productId, display_order: newOrder })
+                })
+
+                if (!response.ok) throw new Error('Failed to update order')
+
+                loadFeaturedProducts()
+            } catch (error) {
+                showError('Failed to update display order: ' + error.message)
+            }
+        }
+
+        // --- NEW: Image Upload Logic ---
+        window.handleFileUpload = async function (input) {
+            if (!input.files || input.files.length === 0) return;
+
+            const file = input.files[0];
+            const dropZone = document.getElementById('drop-zone');
+            const loading = document.getElementById('upload-loading');
+            const placeholder = document.getElementById('upload-placeholder');
+
+            // UI: Show loading
+            placeholder.classList.add('hidden');
+            loading.classList.remove('hidden');
+            dropZone.classList.add('border-amber-500', 'bg-amber-50');
+
+            try {
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+                const filePath = `${fileName}`;
+
+                // 1. Upload to Supabase Storage
+                const { data, error } = await supabase.storage
+                    .from('products')
+                    .upload(filePath, file);
+
+                if (error) throw error;
+
+                // 2. Get Public URL
+                const { data: { publicUrl } } = supabase.storage
+                    .from('products')
+                    .getPublicUrl(filePath);
+
+                // 3. Update Form
+                document.getElementById('product-image').value = publicUrl;
+                previewImage(publicUrl);
+
+                showSuccess('Image uploaded successfully!');
+
+            } catch (error) {
+                console.error('Upload error:', error);
+                showError('Upload failed: ' + error.message);
+
+                // Reset UI
+                placeholder.classList.remove('hidden');
+            } finally {
+                loading.classList.add('hidden');
+                dropZone.classList.remove('border-amber-500', 'bg-amber-50');
+            }
+        }
+
+        let editingProductId = null
+
+        async function loadCategories() {
+            try {
+                // Load categories from API
+                const response = await fetch('/api/admin/categories');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load categories');
+                }
+                
+                const categories = await response.json();
+                const select = document.getElementById('product-category');
+                select.innerHTML = '<option value="">Select a category...</option>';
+
+                categories.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat.id;
+                    option.textContent = cat.name;
+                    select.appendChild(option);
+                });
+
+                console.log(`Loaded ${categories.length} categories for dropdown`);
+            } catch (error) {
+                console.warn('Supabase categories fetch failed, using fallbacks:', error)
+                const select = document.getElementById('product-category')
+                select.innerHTML = '<option value="">Select a category...</option>'
+                defaultCategories.forEach(cat => {
+                    const option = document.createElement('option')
+                    option.value = cat.id
+                    option.textContent = cat.name
+                    select.appendChild(option)
+                })
+            }
+        }
+
+        async function loadProducts() {
+            try {
+                // API doesn't require auth, load products directly
+                const response = await fetch('/api/admin/products')
+
+                if (!response.ok) throw new Error('Failed to fetch products')
+
+                const data = await response.json()
+
+                displayProducts(data || [])
+                updateStats(data || [])
+            } catch (error) {
+                showError('Error loading products: ' + error.message)
+                document.getElementById('products-container').innerHTML =
+                    `<div class="col-span-full flex flex-col items-center justify-center py-20">
+                        <p class="text-red-500 mb-4 text-lg">⚠️ Error loading products</p>
+                        <p class="text-gray-600 mb-6">${error.message}</p>
+                        <button onclick="location.reload()" class="gold-gradient text-white px-6 py-3 rounded-xl font-medium">
+                            Retry
+                        </button>
+                    </div>`
+            }
+        }
+
+        function updateStats(products) {
+            document.getElementById('total-count').textContent = products.length
+
+            const uniqueCategories = new Set(products.map(p => p.category))
+            document.getElementById('category-count').textContent = uniqueCategories.size
+
+            if (products.length > 0) {
+                const latest = new Date(products[0].created_at)
+                const now = new Date()
+                const diffMinutes = Math.floor((now - latest) / 60000)
+
+                if (diffMinutes < 1) {
+                    document.getElementById('last-updated').textContent = 'Just now'
+                } else if (diffMinutes < 60) {
+                    document.getElementById('last-updated').textContent = `${diffMinutes}m ago`
+                } else {
+                    const diffHours = Math.floor(diffMinutes / 60)
+                    document.getElementById('last-updated').textContent = `${diffHours}h ago`
+                }
+            }
+        }
+
+        function displayProducts(products) {
+            const container = document.getElementById('products-container')
+
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full flex flex-col items-center justify-center py-20">
+                        <svg class="w-24 h-24 text-gray-300 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                        </svg>
+                        <p class="text-gray-500 mb-6 text-lg font-light">Your collection awaits its first masterpiece</p>
+                        <button onclick="document.getElementById('add-product-btn').click()" 
+                                class="gold-gradient text-white px-8 py-4 rounded-xl font-medium shadow-xl hover:shadow-2xl transition">
+                            Create First Product
+                        </button>
+                    </div>`
+                return
+            }
+
+            const productHTML = products.map(product => `
+                <div class="product-card glass rounded-2xl overflow-hidden shadow-lg border border-amber-100 animate-fadeIn">
+                    <div class="relative h-64 overflow-hidden bg-gradient-to-br from-stone-100 to-stone-200">
+                        <img src="${product.image_url}" alt="${product.name}" 
+                             class="w-full h-full object-cover hover:scale-110 transition duration-700"
+                             onerror="this.src='https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=800'">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-white/95 backdrop-blur-sm text-amber-800 text-xs font-medium px-3 py-1.5 rounded-full shadow-lg">
+                                ${product.categories?.name || product.category || 'Uncategorized'}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-light text-gray-900 mb-2 leading-tight">${product.name}</h3>
+                        <p class="text-lg font-bold text-amber-800 mb-2">${product.price ? `$${product.price.toFixed(2)}` : ''}</p>
+                        <p class="text-gray-600 mb-6 text-sm font-light line-clamp-2">${product.description}</p>
+                        <div class="flex gap-3">
+                            <button onclick="window.editProduct('${product.id}')" 
+                                    class="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-xl font-medium transition shadow-md hover:shadow-lg">
+                                Edit
+                            </button>
+                            <button onclick="window.deleteProduct('${product.id}')" 
+                                    class="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-medium transition shadow-md hover:shadow-lg">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('')
+            container.innerHTML = productHTML
+        }
+
+        function openAddModal() {
+            editingProductId = null
+            document.getElementById('modal-title').textContent = 'Create Masterpiece'
+            document.getElementById('product-form').reset()
+            document.getElementById('product-id').value = ''
+            document.getElementById('image-preview-container').classList.add('hidden')
+            document.getElementById('product-modal').classList.remove('hidden')
+        }
+
+        window.editProduct = async function (productId) {
+            try {
+                // Get all products and find the one we need
+                const response = await fetch('/api/admin/products');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load products');
+                }
+                
+                const products = await response.json();
+                const product = products.find(p => p.id === productId);
+                
+                if (!product) {
+                    throw new Error('Product not found');
+                }
+
+                editingProductId = product.id
+                document.getElementById('modal-title').textContent = 'Edit Masterpiece'
+                document.getElementById('product-name').value = product.name
+                document.getElementById('product-description').value = product.description
+                document.getElementById('product-image').value = product.image_url
+                document.getElementById('product-category').value = product.category_id
+                document.getElementById('product-price').value = product.price
+                document.getElementById('is-featured').checked = product.is_featured || false
+
+                // Show preview
+                previewImage(product.image_url)
+
+                document.getElementById('product-modal').classList.remove('hidden')
+            } catch (error) {
+                showError('Error loading product: ' + error.message)
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('product-modal').classList.add('hidden')
+            document.getElementById('product-form').reset()
+            document.getElementById('image-preview-container').classList.add('hidden')
+            document.getElementById('product-image').value = ''
+            document.getElementById('upload-placeholder').classList.remove('hidden')
+            editingProductId = null
+        }
+
+        window.deleteProduct = async function (id) {
+            if (!confirm('Delete this masterpiece from your collection?')) return
+
+            try {
+                const response = await fetch(`/api/admin/products?id=${id}`, {
+                    method: 'DELETE'
+                })
+
+                if (!response.ok) throw new Error('Failed to delete product')
+
+                showSuccess('Product removed from collection')
+                loadProducts()
+            } catch (error) {
+                showError('Error deleting product: ' + error.message)
+            }
+        }
+
+        document.getElementById('add-product-btn').addEventListener('click', openAddModal)
+        document.getElementById('close-modal-btn').addEventListener('click', closeModal)
+        document.getElementById('cancel-btn').addEventListener('click', closeModal)
+
+        document.getElementById('product-form').addEventListener('submit', async (e) => {
+            e.preventDefault()
+
+            const priceValue = document.getElementById('product-price').value;
+            const productData = {
+                name: document.getElementById('product-name').value,
+                description: document.getElementById('product-description').value,
+                image_url: document.getElementById('product-image').value,
+                category_id: document.getElementById('product-category').value || null,
+                price: priceValue ? parseFloat(priceValue) : null,
+                is_featured: document.getElementById('is-featured').checked
+            }
+
+            if (editingProductId) {
+                productData.id = editingProductId;
+            }
+
+            try {
+                const response = await fetch('/api/admin/products', {
+                    method: editingProductId ? 'PUT' : 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(productData)
+                })
+
+                if (!response.ok) {
+                    const error = await response.json()
+                    throw new Error(error.error || 'Failed to save product')
+                }
+
+                showSuccess(editingProductId ? 'Masterpiece updated successfully!' : 'Masterpiece added to collection!')
+
+                closeModal()
+                loadProducts()
+            } catch (error) {
+                console.error('Error saving product:', error)
+                showError('Error saving product: ' + error.message)
+            }
+        })
+
+        document.getElementById('product-modal').addEventListener('click', function (e) {
+            if (e.target === this) closeModal()
+        })
+
+        async function init() {
+            const isAuth = await checkAuth()
+            if (isAuth) {
+                await loadCategories()
+                await loadProducts()
+            }
+        }
+
+        init()
+    </script>
+</body>
+
+</html>

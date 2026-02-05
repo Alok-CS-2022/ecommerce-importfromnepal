@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders - Admin</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-30N5XW6E4C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-30N5XW6E4C');
+    </script>
+    <!-- Umami Analytics -->
+    <script defer src="https://cloud.umami.is/script.js"
+        data-website-id="ac82397e-0bc4-4fe6-bac5-42f6b962b391"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50">
+    <nav class="bg-gray-900 text-white p-4 mb-6">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Order Management</h1>
+            <div class="flex items-center gap-4">
+                <a href="dashboard.html" class="text-gray-300 hover:text-white">Dashboard</a>
+                <a href="products.html" class="text-gray-300 hover:text-white">Products</a>
+                <span id="admin-email" class="text-gray-300"></span>
+                <button onclick="logout()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-3xl font-bold">Customer Inquiries</h2>
+            <div class="flex gap-2">
+                <button onclick="filterOrders('all')" id="filter-all"
+                    class="px-4 py-2 rounded bg-gray-900 text-white">All</button>
+                <button onclick="filterOrders('new')" id="filter-new"
+                    class="px-4 py-2 rounded bg-gray-300 text-gray-700">New</button>
+                <button onclick="filterOrders('pending')" id="filter-pending"
+                    class="px-4 py-2 rounded bg-gray-300 text-gray-700">Pending</button>
+                <button onclick="filterOrders('completed')" id="filter-completed"
+                    class="px-4 py-2 rounded bg-gray-300 text-gray-700">Completed</button>
+            </div>
+        </div>
+
+        <div id="loading" class="text-center py-12 text-gray-600">Loading inquiries...</div>
+        <div id="orders-container" class="hidden space-y-4"></div>
+        <div id="empty-state" class="hidden text-center py-12 text-gray-500">
+            <p class="text-lg">No inquiries found.</p>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="order-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg max-w-2xl w-full p-8">
+            <div class="flex justify-between items-start mb-6">
+                <h3 class="text-2xl font-bold">Inquiry Details</h3>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <div id="order-details" class="space-y-4"></div>
+            <div class="mt-6 flex gap-4">
+                <button onclick="closeModal()"
+                    class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-400">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="status-modal"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg max-w-md w-full p-8">
+            <h3 class="text-2xl font-bold mb-6">Update Status</h3>
+            <div class="mb-6">
+                <label class="block text-gray-700 font-semibold mb-2">Select New Status</label>
+                <select id="new-status"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900">
+                    <option value="new">New</option>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="updateStatus()"
+                    class="flex-1 bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800">Update</button>
+                <button onclick="closeStatusModal()"
+                    class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-400">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { supabase } from '../lib/supabase.js'
+
+        let allOrders = []
+        let currentFilter = 'all'
+        let selectedOrderId = null
+
+        async function verifyAuth() {
+            const token = localStorage.getItem('admin_token')
+            if (!token) {
+                window.location.href = 'login.html'
+                return false
+            }
+            await loadOrders()
+            return true
+        }
+
+        async function loadOrders() {
+            const loading = document.getElementById('loading')
+            const container = document.getElementById('orders-container')
+            const emptyState = document.getElementById('empty-state')
+
+            loading.classList.remove('hidden')
+            container.classList.add('hidden')
+            emptyState.classList.add('hidden')
+
+            try {
+                // API doesn't require auth, load orders directly
+                const response = await fetch('/api/admin/orders')
+
+                if (!response.ok) throw new Error('Failed to fetch orders')
+
+                const data = await response.json()
+
+                loading.classList.add('hidden')
+                allOrders = data || []
+                displayOrders(allOrders)
+            } catch (err) {
+                console.error('Unexpected error:', err)
+                loading.classList.add('hidden')
+                alert('Unexpected error: ' + err.message)
+            }
+        }
+
+        function displayOrders(orders) {
+            const container = document.getElementById('orders-container')
+            const emptyState = document.getElementById('empty-state')
+
+            if (!orders || orders.length === 0) {
+                container.classList.add('hidden')
+                emptyState.classList.remove('hidden')
+                return
+            }
+
+            emptyState.classList.add('hidden')
+
+            const statusColors = {
+                new: 'bg-blue-100 text-blue-800',
+                pending: 'bg-yellow-100 text-yellow-800',
+                completed: 'bg-green-100 text-green-800'
+            }
+
+            container.innerHTML = orders.map(order => {
+                const date = new Date(order.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+                return `
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-lg font-bold mb-1">${escapeHtml(order.customer_name || 'No name')}</h3>
+                                <p class="text-sm text-gray-600">${escapeHtml(order.customer_email || 'No email')}</p>
+                                ${order.customer_phone ? `<p class="text-sm text-gray-600">${escapeHtml(order.customer_phone)}</p>` : ''}
+                                ${order.profiles?.email ? `<p class="text-sm text-blue-600">Registered user: ${escapeHtml(order.profiles.email)}</p>` : ''}
+                            </div>
+                            <span class="px-3 py-1 text-sm rounded-full ${statusColors[order.status] || statusColors.new}">
+                                ${(order.status || 'new').charAt(0).toUpperCase() + (order.status || 'new').slice(1)}
+                            </span>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm font-semibold text-gray-700 mb-1">Product:</p>
+                            <p class="text-sm text-gray-900">${escapeHtml(order.product_name || 'N/A')}</p>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm font-semibold text-gray-700 mb-1">Message:</p>
+                            <p class="text-sm text-gray-900 whitespace-pre-wrap">${escapeHtml(order.message || 'No message')}</p>
+                        </div>
+                        <div class="flex justify-between items-center pt-4 border-t">
+                            <p class="text-xs text-gray-500">${date}</p>
+                            <div class="flex gap-2">
+                                <button onclick="viewOrder('${order.id}')" class="text-blue-600 hover:text-blue-800 text-sm font-semibold">View</button>
+                                <button onclick="showStatusModal('${order.id}', '${order.status || 'new'}')" class="text-green-600 hover:text-green-800 text-sm font-semibold">Update</button>
+                                <button onclick="deleteOrder('${order.id}')" class="text-red-600 hover:text-red-800 text-sm font-semibold">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }).join('')
+
+            container.classList.remove('hidden')
+        }
+
+        window.filterOrders = function (status) {
+            currentFilter = status
+            document.querySelectorAll('[id^="filter-"]').forEach(btn => btn.className = 'px-4 py-2 rounded bg-gray-300 text-gray-700')
+            document.getElementById(`filter-${status}`).className = 'px-4 py-2 rounded bg-gray-900 text-white'
+            const filtered = status === 'all' ? allOrders : allOrders.filter(o => (o.status || 'new') === status)
+            displayOrders(filtered)
+        }
+
+        window.viewOrder = function (id) {
+            const order = allOrders.find(o => o.id === id)
+            if (!order) return
+            const statusColors = { new: 'bg-blue-100 text-blue-800', pending: 'bg-yellow-100 text-yellow-800', completed: 'bg-green-100 text-green-800' }
+            document.getElementById('order-details').innerHTML = `
+                <div class="grid grid-cols-2 gap-4">
+                    <div><p class="text-sm text-gray-500">Status</p><span class="inline-block px-3 py-1 text-sm rounded-full ${statusColors[order.status || 'new']}">${(order.status || 'new').charAt(0).toUpperCase() + (order.status || 'new').slice(1)}</span></div>
+                    <div><p class="text-sm text-gray-500">Date</p><p class="font-semibold">${new Date(order.created_at).toLocaleString()}</p></div>
+                    <div><p class="text-sm text-gray-500">Customer Name</p><p class="font-semibold">${escapeHtml(order.customer_name || 'N/A')}</p></div>
+                    <div><p class="text-sm text-gray-500">Email</p><p class="font-semibold">${escapeHtml(order.customer_email || 'N/A')}</p></div>
+                    ${order.customer_phone ? `<div><p class="text-sm text-gray-500">Phone</p><p class="font-semibold">${escapeHtml(order.customer_phone)}</p></div>` : ''}
+                    <div class="col-span-2"><p class="text-sm text-gray-500">Product</p><p class="font-semibold">${escapeHtml(order.product_name || 'N/A')}</p></div>
+                    <div class="col-span-2"><p class="text-sm text-gray-500">Message</p><p class="font-semibold whitespace-pre-wrap">${escapeHtml(order.message || 'No message')}</p></div>
+                </div>
+            `
+            document.getElementById('order-modal').classList.remove('hidden')
+        }
+
+        window.showStatusModal = function (id, currentStatus) {
+            selectedOrderId = id
+            document.getElementById('new-status').value = currentStatus || 'new'
+            document.getElementById('status-modal').classList.remove('hidden')
+        }
+
+        window.updateStatus = async function () {
+            if (!selectedOrderId) return
+            const newStatus = document.getElementById('new-status').value
+            try {
+                const response = await fetch('/api/admin/orders', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: selectedOrderId, status: newStatus })
+                })
+
+                if (!response.ok) throw new Error('Failed to update status')
+
+                closeStatusModal()
+                await loadOrders()
+            } catch (err) { alert('Unexpected error: ' + err.message) }
+        }
+
+        window.deleteOrder = async function (id) {
+            if (!confirm('Are you sure you want to delete this inquiry?')) return
+            try {
+                const { error } = await supabase.from('orders').delete().eq('id', id)
+                if (error) { alert('Error deleting: ' + error.message) } else { await loadOrders() }
+            } catch (err) { alert('Unexpected error: ' + err.message) }
+        }
+
+        window.closeModal = function () { document.getElementById('order-modal').classList.add('hidden') }
+        window.closeStatusModal = function () { document.getElementById('status-modal').classList.add('hidden'); selectedOrderId = null }
+        window.logout = async function () {
+            localStorage.removeItem('admin_token')
+            localStorage.removeItem('admin_user')
+            window.location.href = 'login.html'
+        }
+        function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML }
+
+        verifyAuth().then(isAuth => { if (isAuth) { loadOrders() } })
+    </script>
+</body>
+
+</html>

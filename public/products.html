@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Import From Nepal</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="Browse our complete collection of premium handcrafted products from Nepal">
+    <meta name="keywords" content="shopping, products, ecommerce, online store">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- Load App -->
+    <script type="module" src="js/app.js?v=5"></script>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm fixed w-full z-50 top-0 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-orange-500">
+                        Import From Nepal
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 transition">Home</a>
+                    <a href="products.html" class="text-blue-600 font-semibold">Shop</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-blue-600 transition">Contact</a>
+                </div>
+
+                <!-- Right Side Icons -->
+                <div class="flex items-center space-x-4">
+                    <!-- Search -->
+                    <button onclick="toggleSearch()" class="hidden sm:flex p-2 hover:bg-gray-100 rounded-lg transition">
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Cart Icon -->
+                    <button onclick="openCart()" class="relative p-2 hover:bg-gray-100 rounded-lg transition">
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        <span id="cart-count" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">0</span>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-3 space-y-3">
+                <a href="index.html" class="block py-2 text-gray-700 hover:text-blue-600 transition">Home</a>
+                <a href="products.html" class="block py-2 text-blue-600 font-semibold">Shop</a>
+                <a href="contact.html" class="block py-2 text-gray-700 hover:text-blue-600 transition">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="pt-24 pb-8 px-4 bg-gradient-to-r from-blue-50 to-orange-50">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">Shop All Products</h1>
+            <p class="text-gray-600">Discover our complete collection of premium products</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Sidebar Filters -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-sm p-6 sticky top-24">
+                    <h3 class="text-lg font-bold text-gray-900 mb-6">Filters</h3>
+
+                    <!-- Search Filter -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-semibold text-gray-900 mb-3">Search</label>
+                        <input type="text" id="search-filter" placeholder="Search products..." 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                               oninput="applyFilters()">
+                    </div>
+
+                    <!-- Category Filter -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-semibold text-gray-900 mb-3">Category</label>
+                        <div id="category-filters" class="space-y-2">
+                            <div class="flex items-center">
+                                <input type="radio" id="cat-all" name="category" value="" checked onchange="applyFilters()">
+                                <label for="cat-all" class="ml-2 text-gray-700 cursor-pointer">All Categories</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Filter -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-semibold text-gray-900 mb-3">Price Range</label>
+                        <input type="range" id="price-filter" min="0" max="1000" value="1000" 
+                               class="w-full" oninput="applyFilters()">
+                        <p class="text-sm text-gray-600 mt-2">Up to $<span id="price-value">1000</span></p>
+                    </div>
+
+                    <!-- Sort -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-900 mb-3">Sort By</label>
+                        <select id="sort-filter" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" onchange="applyFilters()">
+                            <option value="newest">Newest</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="popular">Most Popular</option>
+                        </select>
+                    </div>
+
+                    <!-- Clear Filters -->
+                    <button onclick="clearFilters()" class="w-full mt-6 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition text-sm font-semibold">
+                        Clear Filters
+                    </button>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="lg:col-span-3">
+                <!-- Results Count -->
+                <div class="mb-6 flex justify-between items-center">
+                    <p class="text-gray-600">
+                        Showing <span id="products-count">0</span> products
+                    </p>
+                    <p class="text-sm text-gray-500">
+                        Loading products...
+                    </p>
+                </div>
+
+                <!-- Products Grid -->
+                <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Loading skeletons -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm">
+                        <div class="aspect-square bg-gray-200 animate-pulse"></div>
+                        <div class="p-4">
+                            <div class="h-4 bg-gray-200 rounded w-3/4 mb-3 animate-pulse"></div>
+                            <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm">
+                        <div class="aspect-square bg-gray-200 animate-pulse"></div>
+                        <div class="p-4">
+                            <div class="h-4 bg-gray-200 rounded w-3/4 mb-3 animate-pulse"></div>
+                            <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm">
+                        <div class="aspect-square bg-gray-200 animate-pulse"></div>
+                        <div class="p-4">
+                            <div class="h-4 bg-gray-200 rounded w-3/4 mb-3 animate-pulse"></div>
+                            <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <h3 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-orange-400 mb-4">Import From Nepal</h3>
+                    <p class="text-gray-400 text-sm">Premium handcrafted products from Nepal.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Shopping</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="products.html" class="hover:text-white transition">All Products</a></li>
+                        <li><a href="products.html" class="hover:text-white transition">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-white transition">About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-400 text-sm text-center">&copy; 2025 Import From Nepal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black bg-opacity-50" onclick="closeCart()"></div>
+        <div class="bg-white rounded-2xl w-full md:max-w-md max-h-96 overflow-hidden shadow-2xl relative">
+            <div class="sticky top-0 bg-gradient-to-r from-blue-600 to-orange-500 p-4 text-white flex justify-between items-center">
+                <h3 class="font-semibold text-lg">Shopping Cart</h3>
+                <button onclick="closeCart()" class="text-white/70 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="cart-items" class="p-4 max-h-64 overflow-y-auto">
+                <p class="text-center text-gray-500 py-8">Your cart is empty</p>
+            </div>
+            <div class="border-t p-4 bg-gray-50">
+                <div class="flex justify-between items-center mb-4 font-semibold">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal" class="text-blue-600 text-lg">$0.00</span>
+                </div>
+                <button onclick="window.location.href='order.html'" class="w-full bg-gradient-to-r from-blue-600 to-orange-500 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/products.js"></script>
+</body>
+
+</html>

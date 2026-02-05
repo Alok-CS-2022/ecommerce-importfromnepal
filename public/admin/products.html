@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Management - Admin - Import From Nepal</title>
+    <script src="https://cdn.tailwindcss.com"></script>    <script src="api-config.js"></script>    <style>
+        /* All Tailwind classes are now in the HTML. No custom CSS needed. */
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Top Navigation -->
+    <nav class="bg-gray-900 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+     <div class="flex items-center gap-4">
+                <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-orange-400">
+                    Import From Nepal
+                </h1>
+                <span class="text-gray-400 text-sm">Admin Panel</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <span id="admin-user" class="text-gray-400">Admin</span>
+                <a href="/" class="text-gray-400 hover:text-white transition">View Site</a>
+                <button onclick="logout()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded transition">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-800 min-h-screen shadow-lg">
+            <nav class="pt-4">
+                <a href="dashboard.html" class="sidebar-link dashboard-link">
+                    <span>📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="products.html" class="sidebar-link products-link active">
+                    <span>📦</span>
+                    <span>Products</span>
+                </a>
+                <a href="categories.html" class="sidebar-link categories-link">
+                    <span>📂</span>
+                    <span>Categories</span>
+                </a>
+                <a href="orders.html" class="sidebar-link orders-link">
+                    <span>🛒</span>
+                    <span>Orders</span>
+                </a>
+                <a href="content.html" class="sidebar-link content-link">
+                    <span>✏️</span>
+                    <span>Content</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <h2 class="text-3xl font-bold mb-8 text-gray-800">Products Management</h2>
+
+            <!-- Add Product Button -->
+            <button onclick="openProductModal()" class="mb-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+                + Add New Product
+            </button>
+
+            <!-- Search and Filter -->
+            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Search Products</label>
+                        <input type="text" id="search-input" placeholder="Search by name..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Filter by Category</label>
+                        <select id="category-filter" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">All Categories</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Status</label>
+                        <select id="status-filter" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">All Products</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div id="products-container" class="col-span-full">
+                    <p class="text-center text-gray-500 py-8">Loading products...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-96 overflow-y-auto">
+            <div class="sticky top-0 bg-gray-50 px-6 py-4 border-b flex justify-between items-center">
+                <h3 class="text-xl font-bold" id="modal-title">Add New Product</h3>
+                <button onclick="closeProductModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div class="p-6">
+                <form id="product-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Product Name *</label>
+                        <input type="text" id="product-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Description *</label>
+                        <textarea id="product-description" rows="3" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Price *</label>
+                            <input type="number" id="product-price" step="0.01" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">Category *</label>
+                            <select id="product-category" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Image URL</label>
+                        <input type="url" id="product-image" placeholder="https://example.com/image.jpg" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" id="product-featured" class="w-4 h-4">
+                            <span class="text-sm font-semibold text-gray-700">Featured Product</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" id="product-active" checked class="w-4 h-4">
+                            <span class="text-sm font-semibold text-gray-700">Active</span>
+                        </label>
+                    </div>
+                    <label class="flex items-center gap-2">
+                        <input type="checkbox" id="product-top-seller" class="w-4 h-4">
+                        <span class="text-sm font-semibold text-gray-700">🌟 Top Seller (Show on Homepage)</span>
+                    </label>
+                </form>
+            </div>
+            <div class="px-6 py-4 border-t bg-gray-50 flex gap-3">
+                <button onclick="closeProductModal()" class="flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg transition">
+                    Cancel
+                </button>
+                <button onclick="saveProduct()" class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
+                    Save Product
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-4 right-4 space-y-2 z-50"></div>
+
+    <script>
+        let allProducts = [];
+        let allCategories = [];
+        let currentProductId = null;
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `px-4 py-3 rounded shadow-lg text-white ${
+                type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600'
+            }`;
+            toast.textContent = message;
+            document.getElementById('toast-container').appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('admin_token');
+                window.location.href = '/admin/login.html';
+            }
+        }
+
+        async function loadCategories() {
+            try {
+                const response = await fetch(apiUrl('/api/admin/categories'));
+                if (!response.ok) throw new Error('Failed to fetch categories');
+                allCategories = await response.json();
+                
+                // Populate category selects
+                const categorySelects = [
+                    document.getElementById('category-filter'),
+                    document.getElementById('product-category')
+                ];
+                
+                categorySelects.forEach(select => {
+                    select.innerHTML = '<option value="">All Categories</option>' + 
+                        allCategories.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
+                });
+            } catch (error) {
+                console.error('Error loading categories:', error);
+                showToast('Error loading categories', 'error');
+            }
+        }
+
+        async function loadProducts() {
+            try {
+                const response = await fetch(apiUrl('/api/admin/products'));
+                if (!response.ok) throw new Error('Failed to fetch products');
+                allProducts = await response.json();
+                filterAndRenderProducts();
+            } catch (error) {
+                console.error('Error loading products:', error);
+                showToast('Error loading products', 'error');
+                document.getElementById('products-container').innerHTML = '<p class="text-center text-red-500">Error loading products</p>';
+            }
+        }
+
+        function filterAndRenderProducts() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const categoryFilter = document.getElementById('category-filter').value;
+            const statusFilter = document.getElementById('status-filter').value;
+
+            let filtered = allProducts.filter(product => {
+                const matchesSearch = product.name.toLowerCase().includes(searchTerm) || 
+                                    (product.description || '').toLowerCase().includes(searchTerm);
+                const matchesCategory = !categoryFilter || product.category_id === categoryFilter;
+                const matchesStatus = !statusFilter || (statusFilter === 'active' ? product.is_active : !product.is_active);
+                return matchesSearch && matchesCategory && matchesStatus;
+            });
+
+            renderProducts(filtered);
+        }
+
+        function renderProducts(products) {
+            const container = document.getElementById('products-container');
+            
+            if (products.length === 0) {
+                container.innerHTML = '<p class="col-span-full text-center text-gray-500 py-8">No products found</p>';
+                return;
+            }
+
+            container.innerHTML = products.map(product => {
+                const category = allCategories.find(c => c.id === product.category_id);
+                return `
+                    <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden">
+                        <img src="${product.image_url || 'https://via.placeholder.com/300'}" alt="${product.name}" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">${product.name}</h3>
+                            <p class="text-gray-600 text-sm mb-2">${category ? category.name : 'Uncategorized'}</p>
+                            <p class="text-gray-700 text-sm mb-3 line-clamp-2">${product.description || 'No description'}</p>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-xl font-bold text-blue-600">$${product.price.toFixed(2)}</span>
+                                <div class="flex gap-2">
+                                    ${product.is_featured ? '<span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">Featured</span>' : ''}
+                                    ${product.is_active ? '<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Active</span>' : '<span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">Inactive</span>'}
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="editProduct('${product.id}')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded transition text-sm font-semibold">
+                                    Edit
+                                </button>
+                                <button onclick="deleteProduct('${product.id}')" class="flex-1 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded transition text-sm font-semibold">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openProductModal() {
+            currentProductId = null;
+            document.getElementById('modal-title').textContent = 'Add New Product';
+            document.getElementById('product-form').reset();
+            document.getElementById('product-active').checked = true;
+            document.getElementById('product-featured').checked = false;
+            document.getElementById('product-top-seller').checked = false;
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+            currentProductId = null;
+        }
+
+        async function editProduct(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
+
+            currentProductId = productId;
+            document.getElementById('modal-title').textContent = 'Edit Product';
+            document.getElementById('product-name').value = product.name;
+            document.getElementById('product-description').value = product.description || '';
+            document.getElementById('product-price').value = product.price;
+            document.getElementById('product-category').value = product.category_id || '';
+            document.getElementById('product-image').value = product.image_url || '';
+            document.getElementById('product-featured').checked = product.is_featured || false;
+            document.getElementById('product-active').checked = product.is_active !== false;
+            document.getElementById('product-top-seller').checked = product.is_top_seller || false;
+            
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        async function saveProduct() {
+            const name = document.getElementById('product-name').value;
+            const description = document.getElementById('product-description').value;
+            const price = parseFloat(document.getElementById('product-price').value);
+            const categoryId = document.getElementById('product-category').value;
+            const imageUrl = document.getElementById('product-image').value || 'https://via.placeholder.com/300';
+            const isFeatured = document.getElementById('product-featured').checked;
+            const isActive = document.getElementById('product-active').checked;
+            const isTopSeller = document.getElementById('product-top-seller').checked;
+
+            if (!name || !description || !price || !categoryId) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+
+            try {
+                const method = currentProductId ? 'PUT' : 'POST';
+                const body = currentProductId 
+                    ? { id: currentProductId, name, description, price, category_id: categoryId, image_url: imageUrl, is_featured: isFeatured, is_active: isActive, is_top_seller: isTopSeller }
+                    : { name, description, price, category_id: categoryId, image_url: imageUrl, is_featured: isFeatured, is_active: isActive, is_top_seller: isTopSeller };
+
+                const response = await fetch(apiUrl('/api/admin/products'), {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                if (!response.ok) throw new Error('Failed to save product');
+
+                const savedProduct = await response.json();
+                
+                if (currentProductId) {
+                    const idx = allProducts.findIndex(p => p.id === currentProductId);
+                    if (idx !== -1) allProducts[idx] = savedProduct;
+                } else {
+                    allProducts.push(savedProduct);
+                }
+
+                closeProductModal();
+                filterAndRenderProducts();
+                showToast(currentProductId ? 'Product updated successfully' : 'Product added successfully');
+            } catch (error) {
+                console.error('Error saving product:', error);
+                showToast('Error saving product', 'error');
+            }
+        }
+
+        async function deleteProduct(productId) {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+
+            try {
+                const response = await fetch(apiUrl('/api/admin/products'), {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: productId })
+                });
+
+                if (!response.ok) throw new Error('Failed to delete product');
+
+                allProducts = allProducts.filter(p => p.id !== productId);
+                filterAndRenderProducts();
+                showToast('Product deleted successfully');
+            } catch (error) {
+                console.error('Error deleting product:', error);
+                showToast('Error deleting product', 'error');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadCategories();
+            loadProducts();
+        });
+
+        document.getElementById('search-input').addEventListener('keyup', filterAndRenderProducts);
+        document.getElementById('category-filter').addEventListener('change', filterAndRenderProducts);
+        document.getElementById('status-filter').addEventListener('change', filterAndRenderProducts);
+    </script>
+</body>
+</html>

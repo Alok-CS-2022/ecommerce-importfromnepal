@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories - Admin</title>
+    <script defer src="https://cloud.umami.is/script.js"
+        data-website-id="ac82397e-0bc4-4fe6-bac5-42f6b962b391"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .premium-gradient {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-stone-50 to-amber-50 min-h-screen">
+    <!-- Header -->
+    <nav class="premium-gradient text-white shadow-2xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 gold-gradient rounded-lg flex items-center justify-center shadow-lg">
+                        <span class="text-2xl">📂</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-light tracking-tight">Categories Manager</h1>
+                        <p class="text-xs text-gray-400 font-light">Organize your products</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6">
+                    <a href="dashboard.html" class="text-gray-300 hover:text-white transition">Dashboard</a>
+                    <a href="products.html" class="text-gray-300 hover:text-white transition">Products</a>
+                    <a href="content.html" class="text-gray-300 hover:text-white transition">Content</a>
+                    <button onclick="logout()"
+                        class="bg-red-600 hover:bg-red-700 px-5 py-2.5 rounded-lg transition">Sign Out</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <!-- Messages -->
+        <div id="success-message"
+            class="hidden bg-green-50 border-l-4 border-green-500 text-green-800 px-6 py-4 rounded-lg mb-6"></div>
+        <div id="error-message"
+            class="hidden bg-red-50 border-l-4 border-red-500 text-red-800 px-6 py-4 rounded-lg mb-6"></div>
+
+        <!-- Add Category Button -->
+        <div class="mb-6">
+            <button onclick="openAddModal()"
+                class="gold-gradient text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition">
+                + Add New Category
+            </button>
+        </div>
+
+        <!-- Categories Grid -->
+        <div id="categories-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Loading skeleton -->
+            <div class="glass rounded-xl p-6 animate-pulse">
+                <div class="h-40 bg-gray-200 rounded-lg mb-4"></div>
+                <div class="h-6 bg-gray-200 rounded w-3/4 mb-2"></div>
+                <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div id="category-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="glass rounded-2xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <h2 id="modal-title" class="text-2xl font-bold mb-6">Add Category</h2>
+
+            <form id="category-form" class="space-y-4">
+                <input type="hidden" id="category-id">
+
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Category Name *</label>
+                    <input type="text" id="category-name" required
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-amber-500">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Slug (URL-friendly) *</label>
+                    <input type="text" id="category-slug" required
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-amber-500">
+                    <p class="text-xs text-gray-500 mt-1">Example: singing-bowls</p>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Description</label>
+                    <textarea id="category-description" rows="3"
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-amber-500"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Category Image</label>
+                    <input type="file" id="category-image" accept="image/*"
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
+                    <input type="hidden" id="category-image-url">
+                    <div id="image-preview" class="hidden mt-4">
+                        <img id="preview-img" src="" alt="Preview" class="w-full h-48 object-cover rounded-xl">
+                    </div>
+                </div>
+
+                <div class="flex gap-4 pt-4">
+                    <button type="submit" class="flex-1 gold-gradient text-white py-3 rounded-xl font-semibold">
+                        Save Category
+                    </button>
+                    <button type="button" onclick="closeModal()"
+                        class="px-8 py-3 border-2 border-gray-300 rounded-xl hover:bg-gray-50">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { supabase } from '../lib/supabase.js'
+
+        // Verify auth
+        async function verifyAuth() {
+            loadCategories()
+            return true
+        }
+
+        // Load categories
+        async function loadCategories() {
+            const defaultCategories = [
+                { id: 'singing-bowls', name: 'Singing Bowls', image_url: 'https://images.unsplash.com/photo-1599458319801-443b73259966?w=800&q=80', description: 'Hand-hammered Himalayan resonance tools.' },
+                { id: 'thangkas', name: 'Thangka Art', image_url: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=800&q=80', description: 'Sacred spiritual geometry and paintings.' },
+                { id: 'statues', name: 'Buddha Statues', image_url: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80', description: 'Authentic deity statues from Nepalese artisans.' },
+                { id: 'jewelry', name: 'Artisan Jewelry', image_url: 'https://images.unsplash.com/photo-1626014303757-646637e90952?w=800&q=80', description: 'Handcrafted silver and turquoise heritage.' }
+            ];
+
+            try {
+                const { data: dbData, error } = await supabase
+                    .from('categories')
+                    .select('*')
+                    .order('display_order', { ascending: true })
+
+                if (error) throw error
+
+                const grid = document.getElementById('categories-grid')
+                const displayData = (dbData && dbData.length > 0) ? dbData : defaultCategories;
+
+                grid.innerHTML = displayData.map(cat => `
+                    <div class="glass rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition group">
+                        ${cat.image_url ? `
+                            <img src="${cat.image_url}" alt="${cat.name}" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500">
+                        ` : `
+                            <div class="w-full h-40 bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center">
+                                <span class="text-6xl">📂</span>
+                            </div>
+                        `}
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">${cat.name}</h3>
+                            <p class="text-sm text-gray-600 mb-4 line-clamp-2">${cat.description || 'No description available'}</p>
+                            <div class="flex gap-2">
+                                <button onclick="editCategory('${cat.id}')" class="flex-1 bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition text-sm">
+                                    Edit
+                                </button>
+                                <button onclick="deleteCategory('${cat.id}', '${cat.name}')" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')
+            } catch (error) {
+                console.warn('Categories fetch failed, using fallbacks:', error)
+                const grid = document.getElementById('categories-grid')
+                grid.innerHTML = defaultCategories.map(cat => `
+                    <div class="glass rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition group">
+                        <img src="${cat.image_url}" alt="${cat.name}" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">${cat.name}</h3>
+                            <p class="text-sm text-gray-600 mb-4 line-clamp-2">${cat.description}</p>
+                            <div class="flex gap-2">
+                                <button onclick="editCategory('${cat.id}')" class="flex-1 bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition text-sm">
+                                    Edit
+                                </button>
+                                <button onclick="deleteCategory('${cat.id}', '${cat.name}')" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')
+            }
+        }
+
+        // Open add modal
+        window.openAddModal = function () {
+            document.getElementById('modal-title').textContent = 'Add Category'
+            document.getElementById('category-form').reset()
+            document.getElementById('category-id').value = ''
+            document.getElementById('image-preview').classList.add('hidden')
+            document.getElementById('category-modal').classList.remove('hidden')
+        }
+
+        // Close modal
+        window.closeModal = function () {
+            document.getElementById('category-modal').classList.add('hidden')
+        }
+
+        // Edit category
+        window.editCategory = async function (id) {
+            try {
+                const { data, error } = await supabase
+                    .from('categories')
+                    .select('*')
+                    .eq('id', id)
+                    .single()
+
+                if (error) throw error
+
+                document.getElementById('modal-title').textContent = 'Edit Category'
+                document.getElementById('category-id').value = data.id
+                document.getElementById('category-name').value = data.name
+                document.getElementById('category-slug').value = data.slug
+                document.getElementById('category-description').value = data.description || ''
+                document.getElementById('category-image-url').value = data.image_url || ''
+
+                if (data.image_url) {
+                    document.getElementById('preview-img').src = data.image_url
+                    document.getElementById('image-preview').classList.remove('hidden')
+                }
+
+                document.getElementById('category-modal').classList.remove('hidden')
+            } catch (error) {
+                showError('Failed to load category: ' + error.message)
+            }
+        }
+
+        // Delete category
+        window.deleteCategory = async function (id, name) {
+            if (!confirm(`Are you sure you want to delete "${name}"?`)) return
+
+            try {
+                const { error } = await supabase
+                    .from('categories')
+                    .delete()
+                    .eq('id', id)
+
+                if (error) throw error
+
+                showSuccess('Category deleted successfully')
+                loadCategories()
+            } catch (error) {
+                showError('Failed to delete category: ' + error.message)
+            }
+        }
+
+        // Image upload
+        document.getElementById('category-image').addEventListener('change', async (e) => {
+            const file = e.target.files[0]
+            if (!file) return
+
+            try {
+                const fileExt = file.name.split('.').pop()
+                const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
+
+                const { data, error } = await supabase.storage
+                    .from('categories')
+                    .upload(fileName, file)
+
+                if (error) throw error
+
+                const { data: { publicUrl } } = supabase.storage
+                    .from('categories')
+                    .getPublicUrl(fileName)
+
+                document.getElementById('category-image-url').value = publicUrl
+                document.getElementById('preview-img').src = publicUrl
+                document.getElementById('image-preview').classList.remove('hidden')
+
+                showSuccess('Image uploaded successfully')
+            } catch (error) {
+                showError('Image upload failed: ' + error.message)
+            }
+        })
+
+        // Form submit
+        document.getElementById('category-form').addEventListener('submit', async (e) => {
+            e.preventDefault()
+
+            const id = document.getElementById('category-id').value
+            const categoryData = {
+                name: document.getElementById('category-name').value,
+                slug: document.getElementById('category-slug').value,
+                description: document.getElementById('category-description').value,
+                image_url: document.getElementById('category-image-url').value,
+                updated_at: new Date().toISOString()
+            }
+
+            try {
+                if (id) {
+                    // Update
+                    const { error } = await supabase
+                        .from('categories')
+                        .update(categoryData)
+                        .eq('id', id)
+
+                    if (error) throw error
+                    showSuccess('Category updated successfully')
+                } else {
+                    // Insert
+                    const { error } = await supabase
+                        .from('categories')
+                        .insert([categoryData])
+
+                    if (error) throw error
+                    showSuccess('Category created successfully')
+                }
+
+                closeModal()
+                loadCategories()
+            } catch (error) {
+                showError('Failed to save category: ' + error.message)
+            }
+        })
+
+        // Auto-generate slug from name
+        document.getElementById('category-name').addEventListener('input', (e) => {
+            const slug = e.target.value
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-|-$/g, '')
+            document.getElementById('category-slug').value = slug
+        })
+
+        function showSuccess(message) {
+            const el = document.getElementById('success-message')
+            el.textContent = message
+            el.classList.remove('hidden')
+            setTimeout(() => el.classList.add('hidden'), 5000)
+        }
+
+        function showError(message) {
+            const el = document.getElementById('error-message')
+            el.textContent = message
+            el.classList.remove('hidden')
+        }
+
+        window.logout = async function () {
+            await supabase.auth.signOut()
+            window.location.href = 'login.html'
+        }
+
+        verifyAuth()
+    </script>
+</body>
+
+</html>

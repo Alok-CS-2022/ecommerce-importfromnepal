@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Import From Nepal</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="Contact Import From Nepal customer support. We're here to help with your orders and inquiries.">
+    <meta name="keywords" content="contact us, customer support, help">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- Load App -->
+    <script type="module" src="js/app.js?v=5"></script>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm fixed w-full z-50 top-0 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-orange-500">
+                        Import From Nepal
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 transition">Home</a>
+                    <a href="products.html" class="text-gray-700 hover:text-blue-600 transition">Shop</a>
+                    <a href="contact.html" class="text-blue-600 font-semibold">Contact</a>
+                </div>
+
+                <!-- Cart & Mobile Menu -->
+                <div class="flex items-center space-x-4">
+                    <!-- Cart Icon -->
+                    <button onclick="openCart()" class="relative p-2 hover:bg-gray-100 rounded-lg transition">
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                        <span id="cart-count"
+                            class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">0</span>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-3 space-y-3">
+                <a href="index.html" class="block py-2 text-gray-700 hover:text-blue-600 transition">Home</a>
+                <a href="products.html" class="block py-2 text-gray-700 hover:text-blue-600 transition">Shop</a>
+                <a href="contact.html" class="block py-2 text-blue-600 font-semibold">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="pt-24 pb-12 px-4 bg-gradient-to-r from-blue-50 to-orange-50">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+                Get in <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-orange-500">Touch</span>
+            </h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="py-16">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6">
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <form id="contact-page-form" class="space-y-6">
+                    <!-- Name -->
+                    <div>
+                        <label for="customer_name" class="block text-sm font-medium text-gray-700 mb-2">
+                            Your Name *
+                        </label>
+                        <input type="text" 
+                               id="customer_name" 
+                               name="customer_name" 
+                               required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
+                               placeholder="John Doe">
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="customer_email" class="block text-sm font-medium text-gray-700 mb-2">
+                            Email Address *
+                        </label>
+                        <input type="email" 
+                               id="customer_email" 
+                               name="customer_email" 
+                               required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
+                               placeholder="john@example.com">
+                    </div>
+
+                    <!-- Phone -->
+                    <div>
+                        <label for="customer_phone" class="block text-sm font-medium text-gray-700 mb-2">
+                            Phone Number (Optional)
+                        </label>
+                        <input type="tel" 
+                               id="customer_phone" 
+                               name="customer_phone"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
+                               placeholder="+1 (555) 123-4567">
+                    </div>
+
+                    <!-- Message -->
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-2">
+                            Message *
+                        </label>
+                        <textarea id="message" 
+                                  name="message" 
+                                  required
+                                  rows="6"
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition resize-none"
+                                  placeholder="Tell us about your inquiry..."></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div>
+                        <button type="submit"
+                                class="w-full bg-amber-700 text-white py-4 rounded-xl font-medium text-lg hover:bg-amber-800 transition shadow-lg">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-medium text-gray-900 mb-2">Email</h3>
+                    <p class="text-gray-600 text-sm">info@importfromnepal.com</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-medium text-gray-900 mb-2">Location</h3>
+                    <p class="text-gray-600 text-sm">Thamel, Kathmandu, Nepal</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-medium text-gray-900 mb-2">Hours</h3>
+                    <p class="text-gray-600 text-sm">Mon-Fri: 9AM-6PM (NPT)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- About -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-amber-500">Import From Nepal</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Bringing authentic Himalayan handicrafts to the world. Each piece tells a story of tradition and craftsmanship.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6">Quick Links</h3>
+                    <ul class="space-y-4 text-gray-400 text-sm">
+                        <li><a href="index.html" class="hover:text-amber-500 transition">Home</a></li>
+                        <li><a href="products.html" class="hover:text-amber-500 transition">Products</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-500 transition">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6">Contact</h3>
+                    <ul class="space-y-4 text-gray-400 text-sm">
+                        <li>Email: info@importfromnepal.com</li>
+                        <li>Location: Thamel, Kathmandu, Nepal</li>
+                        <li>Hours: Mon-Fri 9AM-6PM (NPT)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400 text-sm">&copy; 2025 Import From Nepal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="hidden fixed inset-0 z-50">
+        <div class="absolute inset-0 bg-black bg-opacity-50" onclick="closeCart()"></div>
+        <div id="cart-sidebar" class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
+            <!-- Header -->
+            <div class="p-6 border-b flex justify-between items-center">
+                <h2 class="text-2xl font-light">Your Cart</h2>
+                <button onclick="closeCart()" class="text-gray-500 hover:text-black">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Cart Items -->
+            <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-6">
+                <!-- Dynamic content -->
+            </div>
+            
+            <!-- Footer -->
+            <div class="p-6 border-t bg-gray-50 space-y-4">
+                <div class="flex justify-between text-lg">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal" class="font-semibold text-amber-700">$0.00</span>
+                </div>
+                <button onclick="window.location.href='order.html'" 
+                        class="w-full bg-amber-700 text-white py-4 rounded-xl font-medium hover:bg-amber-800 transition">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import From Nepal - Authentic Handicrafts</title>
+    
+    <!-- Analytics (Optional - Remove if not needed) -->
+    <script defer src="https://cloud.umami.is/script.js"
+        data-website-id="ac82397e-0bc4-4fe6-bac5-42f6b962b391"></script>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="Authentic handcrafted treasures from Nepal. Shop statues, singing bowls, thangkas, and more directly from artisans in the Himalayas.">
+    <meta name="keywords" content="Nepal handicrafts, singing bowls, buddha statues, thangka painting, himalayan art, authentic nepal export">
+    <meta name="author" content="Import From Nepal">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://importfromnepal.com/">
+    <meta property="og:title" content="Import From Nepal - Authentic Handicrafts">
+    <meta property="og:description" content="Authentic handcrafted treasures from Nepal. Shop statues, singing bowls, thangkas, and more directly from artisans in the Himalayas.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=1200&h=630&fit=crop&q=90">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://importfromnepal.com/">
+    <meta property="twitter:title" content="Import From Nepal - Authentic Handicrafts">
+    <meta property="twitter:description" content="Authentic handcrafted treasures from Nepal. Shop statues, singing bowls, thangkas, and more directly from artisans in the Himalayas.">
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=1200&h=630&fit=crop&q=90">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- Load App (with Supabase included) -->
+    <script type="module" src="js/app.js?v=4"></script>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-amber-700">Import From Nepal</span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-amber-700 font-semibold">Home</a>
+                    <a href="products.html" class="text-gray-700 hover:text-amber-700 transition">Products</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-amber-700 transition">Contact</a>
+                </div>
+
+                <!-- Cart & Mobile Menu -->
+                <div class="flex items-center space-x-4">
+                    <!-- Cart Icon -->
+                    <button onclick="openCart()" class="relative p-2 hover:bg-gray-100 rounded-full transition">
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                        <span id="cart-count"
+                            class="hidden absolute -top-1 -right-1 bg-amber-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">0</span>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-3 space-y-3">
+                <a href="index.html" class="block py-2 text-gray-700 hover:text-amber-700 transition">Home</a>
+                <a href="products.html" class="block py-2 text-gray-700 hover:text-amber-700 transition">Products</a>
+                <a href="contact.html" class="block py-2 text-gray-700 hover:text-amber-700 transition">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 px-4 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 animate-gradient"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Left: Content -->
+                <div class="text-center lg:text-left">
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-light text-gray-900 leading-tight mb-6">
+                        Handcrafted in the <span class="font-normal text-amber-800">Himalayas</span>
+                    </h1>
+                    <p class="text-lg text-gray-600 mb-10 leading-relaxed">
+                        Authentic Nepalese crafts made by skilled artisans using centuries-old traditions.
+                    </p>
+                    <a href="products.html" class="inline-block bg-amber-800 text-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-amber-900 transition shadow-lg">
+                        Explore Collection
+                    </a>
+                </div>
+                
+                <!-- Right: Image -->
+                <div class="relative">
+                    <div class="aspect-square rounded-2xl overflow-hidden shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=1200&h=1200&fit=crop&q=90" 
+                             alt="Handcrafted Nepalese Handicrafts" 
+                             class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section id="featured-products" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-light text-gray-900">Featured <span class="italic font-normal text-amber-800">Masterpieces</span></h2>
+            </div>
+            
+            <div id="featured-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Products will be loaded here by app.js -->
+                <div class="col-span-full text-center py-12">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-amber-700"></div>
+                    <p class="mt-4 text-gray-600">Loading products...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-light text-gray-900">Why Collectors <span class="italic text-amber-800">Choose Us</span></h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
+                    <div class="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-3xl mb-6 mx-auto">✨</div>
+                    <h3 class="text-xl font-light text-gray-900 mb-4">Authentic Heritage</h3>
+                    <p class="text-gray-600">Every artifact is verified for its cultural authenticity and handcrafted origin.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
+                    <div class="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-3xl mb-6 mx-auto">🤝</div>
+                    <h3 class="text-xl font-light text-gray-900 mb-4">Fair Trade Ethics</h3>
+                    <p class="text-gray-600">Artisans receive the majority of the profits for their devotion.</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-sm text-center">
+                    <div class="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-3xl mb-6 mx-auto">🌎</div>
+                    <h3 class="text-xl font-light text-gray-900 mb-4">Global Reach</h3>
+                    <p class="text-gray-600">Museum-grade packaging and reliable worldwide delivery.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- About -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-amber-500">Import From Nepal</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Bringing authentic Himalayan handicrafts to the world. Each piece tells a story of tradition and craftsmanship.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6">Quick Links</h3>
+                    <ul class="space-y-4 text-gray-400 text-sm">
+                        <li><a href="index.html" class="hover:text-amber-500 transition">Home</a></li>
+                        <li><a href="products.html" class="hover:text-amber-500 transition">Products</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-500 transition">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-lg font-bold mb-6">Contact</h3>
+                    <ul class="space-y-4 text-gray-400 text-sm">
+                        <li>Email: info@importfromnepal.com</li>
+                        <li>Location: Thamel, Kathmandu, Nepal</li>
+                        <li>Hours: Mon-Fri 9AM-6PM (NPT)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400 text-sm">&copy; 2025 Import From Nepal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="hidden fixed inset-0 z-50">
+        <div class="absolute inset-0 bg-black bg-opacity-50" onclick="closeCart()"></div>
+        <div id="cart-sidebar" class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
+            <!-- Header -->
+            <div class="p-6 border-b flex justify-between items-center">
+                <h2 class="text-2xl font-light">Your Cart</h2>
+                <button onclick="closeCart()" class="text-gray-500 hover:text-black">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Cart Items -->
+            <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-6">
+                <!-- Dynamic content -->
+            </div>
+            
+            <!-- Footer -->
+            <div class="p-6 border-t bg-gray-50 space-y-4">
+                <div class="flex justify-between text-lg">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal" class="font-semibold text-amber-700">$0.00</span>
+                </div>
+                <button onclick="window.location.href='contact.html'" class="w-full bg-amber-700 text-white py-4 rounded-xl font-medium hover:bg-amber-800 transition">
+                    Proceed to Inquiry
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="product-detail-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <!-- Header -->
+            <div class="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
+                <h3 class="text-2xl font-light text-gray-900" id="detail-product-name">Product Details</h3>
+                <button onclick="closeProductDetail()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Content -->
+            <div class="p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Image -->
+                    <div class="aspect-square bg-gray-100 rounded-xl overflow-hidden">
+                        <img id="detail-product-image" src="" alt="" class="w-full h-full object-cover">
+                    </div>
+                    
+                    <!-- Details -->
+                    <div class="space-y-6">
+                        <div id="detail-product-price-info" class="bg-amber-50 rounded-xl p-5">
+                            <!-- Dynamic price -->
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-sm uppercase tracking-wider text-gray-500 mb-3">Description</h4>
+                            <p id="detail-product-description" class="text-gray-700 leading-relaxed"></p>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <button onclick="closeProductDetail()"
+                                class="w-full border-2 border-gray-300 text-gray-700 py-3 rounded-xl font-medium hover:border-gray-400 transition">
+                                Continue Shopping
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

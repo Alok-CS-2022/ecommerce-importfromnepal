@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test - Import From Nepal</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            margin: 10px 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #f0f0f0;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background: #e5e7eb;
+        }
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        pre {
+            background: #1e293b;
+            color: #f9fafb;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔍 Debug Test Page</h1>
+        <p>This page tests if localStorage is working correctly.</p>
+
+        <div id="status" class="status">
+            Loading localStorage...
+        </div>
+
+        <h2>Current Data in localStorage:</h2>
+        <pre id="current-data">Checking...</pre>
+
+        <h2>Test Actions:</h2>
+
+        <button onclick="testRead()">1. Test Read</button>
+        <button onclick="testWrite('test', 'Hello World')">2. Test Write</button>
+        <button onclick="testWriteStats()">3. Test Stats Update</button>
+        <button onclick="clearAll()">4. Clear All Data</button>
+        <button onclick="viewRaw()">5. View Raw localStorage</button>
+
+        <div id="action-result" class="status"></div>
+    </div>
+
+    <script>
+        function updateStatus(message, type = 'info') {
+            const el = document.getElementById('status');
+            el.className = `status ${type}`;
+            el.textContent = message;
+        }
+
+        function showResult(message) {
+            document.getElementById('action-result').innerHTML = message;
+        }
+
+        function updateDisplay() {
+            const data = localStorage.getItem('site_content');
+            const pre = document.getElementById('current-data');
+            if (data) {
+                try {
+                    const parsed = JSON.parse(data);
+                    pre.textContent = JSON.stringify(parsed, null, 2);
+                    updateStatus('✅ localStorage contains data', 'success');
+                } catch (e) {
+                    pre.textContent = 'Error parsing: ' + e.message;
+                    updateStatus('❌ Invalid JSON in localStorage', 'error');
+                }
+            } else {
+                pre.textContent = 'No data in localStorage';
+                updateStatus('❌ localStorage is empty', 'error');
+            }
+        }
+
+        function testRead() {
+            const data = localStorage.getItem('site_content');
+            if (data) {
+                try {
+                    const parsed = JSON.parse(data);
+                    showResult('✅ Read successful!\n\nData:\n' + JSON.stringify(parsed, null, 2));
+                    updateStatus('✅ Read test passed', 'success');
+                } catch (e) {
+                    showResult('❌ Read failed: ' + e.message);
+                    updateStatus('❌ Invalid JSON', 'error');
+                }
+            } else {
+                showResult('❌ No data found in localStorage');
+                updateStatus('❌ Read test failed', 'error');
+            }
+            updateDisplay();
+        }
+
+        function testWrite(key, value) {
+            try {
+                localStorage.setItem(key, value);
+                showResult('✅ Write successful!\n\nKey: ' + key + '\nValue: ' + value);
+                updateStatus('✅ Write test passed', 'success');
+                updateDisplay();
+            } catch (e) {
+                showResult('❌ Write failed: ' + e.message);
+                updateStatus('❌ Write test failed', 'error');
+            }
+        }
+
+        function testWriteStats() {
+            const testData = {
+                hero: {
+                    title: 'Test Title from Debug',
+                    subtitle: 'Test Subtitle from Debug Page'
+                },
+                stats: {
+                    happyCustomers: 999,
+                    productsSold: 888,
+                    yearsInBusiness: 99,
+                    averageRating: '4.9'
+                },
+                whyChooseUs: {
+                    items: [
+                        { icon: '🎯', title: 'Test Benefit 1', description: 'This is a test from debug page' },
+                        { icon: '✨', title: 'Test Benefit 2', description: 'Another test from debug' }
+                    ]
+                }
+            };
+
+            try {
+                const current = localStorage.getItem('site_content');
+                let content = current ? JSON.parse(current) : {};
+
+                // Merge with test data
+                content = { ...content, ...testData };
+
+                localStorage.setItem('site_content', JSON.stringify(content));
+                showResult('✅ Stats written!\n\nStats saved:\n' +
+                    'Happy Customers: 999\n' +
+                    'Products Sold: 888\n' +
+                    'Years in Business: 99\n' +
+                    'Average Rating: 4.9\n\n' +
+                    '✨ This should update homepage when you refresh it!');
+                updateStatus('✅ Stats test passed', 'success');
+                updateDisplay();
+            } catch (e) {
+                showResult('❌ Stats write failed: ' + e.message);
+                updateStatus('❌ Stats test failed', 'error');
+            }
+        }
+
+        function clearAll() {
+            if (confirm('Clear all localStorage data?')) {
+                localStorage.clear();
+                showResult('✅ All localStorage cleared!');
+                updateStatus('✅ Cleared', 'info');
+                updateDisplay();
+            }
+        }
+
+        function viewRaw() {
+            const keys = Object.keys(localStorage).sort();
+            const result = keys.map(key => {
+                const value = localStorage.getItem(key);
+                const size = value ? new Blob([value]).size : 0;
+                return `<strong>${key}</strong> (${size} bytes): ${value ? value.substring(0, 100) + '...' : '(empty)'}`;
+            }).join('\n\n');
+            showResult('<strong>All localStorage keys:</strong>\n\n' + result);
+        }
+
+        // Auto-load on page load
+        updateDisplay();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonials - Admin</title>
+    <script defer src="https://cloud.umami.is/script.js"
+        data-website-id="ac82397e-0bc4-4fe6-bac5-42f6b962b391"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .premium-gradient {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-stone-50 to-amber-50 min-h-screen">
+    <!-- Header -->
+    <nav class="premium-gradient text-white shadow-2xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 gold-gradient rounded-lg flex items-center justify-center shadow-lg">
+                        <span class="text-2xl">⭐</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-light tracking-tight">Testimonials Manager</h1>
+                        <p class="text-xs text-gray-400 font-light">Manage customer reviews</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6">
+                    <a href="dashboard.html" class="text-gray-300 hover:text-white transition">Dashboard</a>
+                    <a href="categories.html" class="text-gray-300 hover:text-white transition">Categories</a>
+                    <a href="content.html" class="text-gray-300 hover:text-white transition">Content</a>
+                    <button onclick="logout()"
+                        class="bg-red-600 hover:bg-red-700 px-5 py-2.5 rounded-lg transition">Sign Out</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <!-- Messages -->
+        <div id="success-message"
+            class="hidden bg-green-50 border-l-4 border-green-500 text-green-800 px-6 py-4 rounded-lg mb-6"></div>
+        <div id="error-message"
+            class="hidden bg-red-50 border-l-4 border-red-500 text-red-800 px-6 py-4 rounded-lg mb-6"></div>
+
+        <!-- Add Button -->
+        <div class="mb-6">
+            <button onclick="openAddModal()"
+                class="gold-gradient text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition">
+                + Add New Testimonial
+            </button>
+        </div>
+
+        <!-- Testimonials List -->
+        <div id="testimonials-list" class="space-y-4">
+            <!-- Loading -->
+            <div class="glass rounded-xl p-6 animate-pulse">
+                <div class="flex gap-4">
+                    <div class="w-16 h-16 bg-gray-200 rounded-full"></div>
+                    <div class="flex-1">
+                        <div class="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+                        <div class="h-3 bg-gray-200 rounded w-1/2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div id="testimonial-modal"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="glass rounded-2xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <h2 id="modal-title" class="text-2xl font-bold mb-6">Add Testimonial</h2>
+
+            <form id="testimonial-form" class="space-y-4">
+                <input type="hidden" id="testimonial-id">
+
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Customer Name *</label>
+                    <input type="text" id="customer-name" required
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-amber-500">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Rating *</label>
+                    <select id="rating" required
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-amber-500">
+                        <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
+                        <option value="4">⭐⭐⭐⭐ (4 stars)</option>
+                        <option value="3">⭐⭐⭐ (3 stars)</option>
+                        <option value="2">⭐⭐ (2 stars)</option>
+                        <option value="1">⭐ (1 star)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Review Text *</label>
+                    <textarea id="review-text" required rows="4"
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-amber-500"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Customer Photo (Optional)</label>
+                    <input type="file" id="customer-photo" accept="image/*"
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl">
+                    <input type="hidden" id="photo-url">
+                    <div id="photo-preview" class="hidden mt-4">
+                        <img id="preview-img" src="" alt="Preview" class="w-24 h-24 rounded-full object-cover mx-auto">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="flex items-center gap-2">
+                        <input type="checkbox" id="is-featured" class="w-5 h-5 text-amber-600">
+                        <span class="text-gray-700 font-semibold">Show on Homepage</span>
+                    </label>
+                </div>
+
+                <div class="flex gap-4 pt-4">
+                    <button type="submit" class="flex-1 gold-gradient text-white py-3 rounded-xl font-semibold">
+                        Save Testimonial
+                    </button>
+                    <button type="button" onclick="closeModal()"
+                        class="px-8 py-3 border-2 border-gray-300 rounded-xl hover:bg-gray-50">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { supabase } from '../lib/supabase.js'
+
+        async function verifyAuth() {
+            loadTestimonials()
+            return true
+        }
+
+        async function loadTestimonials() {
+            try {
+                const { data, error } = await supabase
+                    .from('testimonials')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+
+                if (error) throw error
+
+                const list = document.getElementById('testimonials-list')
+
+                if (!data || data.length === 0) {
+                    list.innerHTML = `
+                        <div class="text-center py-12">
+                            <p class="text-gray-500 text-lg">No testimonials yet. Add your first one!</p>
+                        </div>
+                    `
+                    return
+                }
+
+                list.innerHTML = data.map(t => `
+                    <div class="glass rounded-xl p-6 shadow-lg hover:shadow-xl transition">
+                        <div class="flex gap-4">
+                            ${t.customer_photo_url ? `
+                                <img src="${t.customer_photo_url}" alt="${t.customer_name}" class="w-16 h-16 rounded-full object-cover">
+                            ` : `
+                                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-2xl font-bold">
+                                    ${t.customer_name.charAt(0)}
+                                </div>
+                            `}
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <h3 class="font-bold text-lg">${t.customer_name}</h3>
+                                        <div class="text-amber-500">${'⭐'.repeat(t.rating)}</div>
+                                    </div>
+                                    ${t.is_featured ? '<span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">Featured</span>' : ''}
+                                </div>
+                                <p class="text-gray-700 mb-4">"${t.review_text}"</p>
+                                <div class="flex gap-2">
+                                    <button onclick="editTestimonial('${t.id}')" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm">
+                                        Edit
+                                    </button>
+                                    <button onclick="deleteTestimonial('${t.id}', '${t.customer_name}')" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition text-sm">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')
+            } catch (error) {
+                console.error('Error loading testimonials:', error)
+                showError('Failed to load testimonials: ' + error.message)
+            }
+        }
+
+        window.openAddModal = function () {
+            document.getElementById('modal-title').textContent = 'Add Testimonial'
+            document.getElementById('testimonial-form').reset()
+            document.getElementById('testimonial-id').value = ''
+            document.getElementById('photo-preview').classList.add('hidden')
+            document.getElementById('testimonial-modal').classList.remove('hidden')
+        }
+
+        window.closeModal = function () {
+            document.getElementById('testimonial-modal').classList.add('hidden')
+        }
+
+        window.editTestimonial = async function (id) {
+            try {
+                const { data, error } = await supabase
+                    .from('testimonials')
+                    .select('*')
+                    .eq('id', id)
+                    .single()
+
+                if (error) throw error
+
+                document.getElementById('modal-title').textContent = 'Edit Testimonial'
+                document.getElementById('testimonial-id').value = data.id
+                document.getElementById('customer-name').value = data.customer_name
+                document.getElementById('rating').value = data.rating
+                document.getElementById('review-text').value = data.review_text
+                document.getElementById('is-featured').checked = data.is_featured
+                document.getElementById('photo-url').value = data.customer_photo_url || ''
+
+                if (data.customer_photo_url) {
+                    document.getElementById('preview-img').src = data.customer_photo_url
+                    document.getElementById('photo-preview').classList.remove('hidden')
+                }
+
+                document.getElementById('testimonial-modal').classList.remove('hidden')
+            } catch (error) {
+                showError('Failed to load testimonial: ' + error.message)
+            }
+        }
+
+        window.deleteTestimonial = async function (id, name) {
+            if (!confirm(`Delete testimonial from "${name}"?`)) return
+
+            try {
+                const { error } = await supabase
+                    .from('testimonials')
+                    .delete()
+                    .eq('id', id)
+
+                if (error) throw error
+
+                showSuccess('Testimonial deleted successfully')
+                loadTestimonials()
+            } catch (error) {
+                showError('Failed to delete testimonial: ' + error.message)
+            }
+        }
+
+        document.getElementById('customer-photo').addEventListener('change', async (e) => {
+            const file = e.target.files[0]
+            if (!file) return
+
+            try {
+                const fileExt = file.name.split('.').pop()
+                const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
+
+                const { data, error } = await supabase.storage
+                    .from('testimonials')
+                    .upload(fileName, file)
+
+                if (error) throw error
+
+                const { data: { publicUrl } } = supabase.storage
+                    .from('testimonials')
+                    .getPublicUrl(fileName)
+
+                document.getElementById('photo-url').value = publicUrl
+                document.getElementById('preview-img').src = publicUrl
+                document.getElementById('photo-preview').classList.remove('hidden')
+
+                showSuccess('Photo uploaded successfully')
+            } catch (error) {
+                showError('Photo upload failed: ' + error.message)
+            }
+        })
+
+        document.getElementById('testimonial-form').addEventListener('submit', async (e) => {
+            e.preventDefault()
+
+            const id = document.getElementById('testimonial-id').value
+            const testimonialData = {
+                customer_name: document.getElementById('customer-name').value,
+                rating: parseInt(document.getElementById('rating').value),
+                review_text: document.getElementById('review-text').value,
+                customer_photo_url: document.getElementById('photo-url').value,
+                is_featured: document.getElementById('is-featured').checked,
+                updated_at: new Date().toISOString()
+            }
+
+            try {
+                if (id) {
+                    const { error } = await supabase
+                        .from('testimonials')
+                        .update(testimonialData)
+                        .eq('id', id)
+
+                    if (error) throw error
+                    showSuccess('Testimonial updated successfully')
+                } else {
+                    const { error } = await supabase
+                        .from('testimonials')
+                        .insert([testimonialData])
+
+                    if (error) throw error
+                    showSuccess('Testimonial created successfully')
+                }
+
+                closeModal()
+                loadTestimonials()
+            } catch (error) {
+                showError('Failed to save testimonial: ' + error.message)
+            }
+        })
+
+        function showSuccess(message) {
+            const el = document.getElementById('success-message')
+            el.textContent = message
+            el.classList.remove('hidden')
+            setTimeout(() => el.classList.add('hidden'), 5000)
+        }
+
+        function showError(message) {
+            const el = document.getElementById('error-message')
+            el.textContent = message
+            el.classList.remove('hidden')
+        }
+
+        window.logout = async function () {
+            await supabase.auth.signOut()
+            window.location.href = 'login.html'
+        }
+
+        verifyAuth()
+    </script>
+</body>
+
+</html>

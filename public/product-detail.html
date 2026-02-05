@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | Import From Nepal</title>
+    <!-- Umami Analytics -->
+    <script defer src="https://cloud.umami.is/script.js"
+        data-website-id="ac82397e-0bc4-4fe6-bac5-42f6b962b391"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/custom.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-30N5XW6E4C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-30N5XW6E4C');
+    </script>
+    <style>
+        .premium-shadow {
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .related-card:hover img {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex flex-col min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-14 sm:h-16">
+                <div class="flex items-center site-logo-container">
+                    <a href="index.html"
+                        class="text-base sm:text-xl md:text-2xl font-bold text-amber-700 leading-tight">Import From
+                        Nepal</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-6 lg:space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-amber-700 transition">Home</a>
+                    <a href="products.html" class="text-gray-700 hover:text-amber-700 transition">Products</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-amber-700 transition">Contact</a>
+                </div>
+
+                <!-- Right side icons -->
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <!-- Wishlist Icon -->
+                    <button onclick="openWishlist()"
+                        class="relative p-2 hover:bg-gray-100 rounded-full transition hidden sm:block">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                            </path>
+                        </svg>
+                        <span id="wishlist-count"
+                            class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">0</span>
+                    </button>
+
+                    <!-- Cart Icon -->
+                    <button onclick="openCart()" class="relative p-2 hover:bg-gray-100 rounded-full transition">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                        <span id="cart-count"
+                            class="hidden absolute -top-1 -right-1 bg-amber-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">0</span>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Bar (Hidden by default) -->
+        <div id="search-bar" class="hidden border-t bg-gray-50 py-3 px-4">
+            <div class="max-w-3xl mx-auto">
+                <input type="text" id="search-input" placeholder="Search products..."
+                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    oninput="searchProducts(this.value)">
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-3 space-y-3">
+                <a href="index.html" class="block py-2 text-gray-700 hover:text-amber-700 transition">Home</a>
+                <a href="products.html" class="block py-2 text-gray-700 hover:text-amber-700 transition">Products</a>
+                <a href="contact.html" class="block py-2 text-gray-700 hover:text-amber-700 transition">Contact</a>
+                <button onclick="openWishlist()"
+                    class="w-full text-left py-2 text-gray-700 hover:text-amber-700 transition sm:hidden">
+                    Wishlist (<span id="wishlist-count-mobile">0</span>)
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <!-- Breadcrumbs -->
+        <nav class="text-sm text-gray-500 mb-8">
+            <a href="index.html" class="hover:text-amber-700">Home</a> /
+            <a href="products.html" class="hover:text-amber-700">Artisan Collection</a> /
+            <span id="breadcrumb-current" class="text-gray-900 font-medium">Masterpiece Details</span>
+        </nav>
+
+        <div id="product-detail-container" class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+            <!-- Loading State -->
+            <div class="col-span-full py-32 text-center text-gray-400">
+                <p class="text-xl animate-pulse">Loading artifact details...</p>
+            </div>
+        </div>
+
+        <!-- Related Products Section -->
+        <section class="mt-24 border-t border-gray-100 pt-16">
+            <h2 class="text-2xl md:text-3xl font-light text-gray-900 mb-10">You May Also Like</h2>
+            <div id="related-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Dynamically loaded -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-auto">
+        <!-- Main Footer -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- Column 1: About -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-amber-500">Import From Nepal</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Bringing authentic Himalayan handicrafts to the world. Each piece tells a story of tradition and
+                        craftsmanship.
+                    </p>
+                    <!-- Social Icons -->
+                    <div id="footer-social-links" class="flex gap-3">
+                        <a href="#"
+                            class="bg-gray-800 p-2.5 rounded-full hover:bg-amber-600 transition social-facebook">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="bg-gray-800 p-2.5 rounded-full hover:bg-amber-600 transition social-instagram">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771-4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073z" />
+                                <path
+                                    d="M12 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                            </svg>
+                        </a>
+                        <a href="#" class="bg-gray-800 p-2.5 rounded-full hover:bg-amber-600 transition social-twitter">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Column 2: Quick Links -->
+                <div class="lg:pl-12">
+                    <h3 class="text-lg font-bold mb-6">Quick Links</h3>
+                    <ul class="space-y-4 text-gray-400 text-sm">
+                        <li><a href="index.html" class="hover:text-amber-500 transition">Home</a></li>
+                        <li><a href="products.html" class="hover:text-amber-500 transition">All Products</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-500 transition">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition">Track Order</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Customer Service -->
+                <div class="lg:pl-12">
+                    <h3 class="text-lg font-bold mb-6">Customer Service</h3>
+                    <ul class="space-y-4 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-amber-500 transition">Shipping Policy</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition">Return & Refund</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="border-t border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p id="footer-copyright-text" class="text-gray-400 text-sm">&copy; 2025 Import From Nepal. All
+                        rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Inquiry Modal -->
+    <div id="inquiry-modal" class="hidden fixed inset-0 z-[70] flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black bg-opacity-60 backdrop-blur-md" onclick="closeInquiryModal()"></div>
+        <div class="bg-white rounded-3xl w-full max-w-lg relative overflow-hidden shadow-2xl">
+            <div class="bg-amber-700 p-8 text-white relative">
+                <h2 class="text-3xl font-light">Submit Inquiry</h2>
+                <p class="text-amber-100 font-light mt-2">Let us know which masterpieces you're interested in.</p>
+                <button onclick="closeInquiryModal()" class="absolute top-8 right-8 text-white/70 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <form id="catalog-inquiry-form" class="p-8 space-y-5">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <input type="text" name="customer_name" required
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <input type="email" name="customer_email" required
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                    <textarea name="message" id="inquiry-message" rows="4"
+                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none resize-none"></textarea>
+                </div>
+                <button type="submit"
+                    class="w-full bg-amber-700 text-white py-4 rounded-xl font-medium shadow-lg hover:bg-amber-800 transition">Send
+                    Inquiry Request</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Core Scripts -->
+    <script src="js/ui.js"></script>
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/product-detail.js"></script>
+    <script type="module">
+        import { loadSiteContent } from './js/content-loader.js';
+
+        // Initialize content loader
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSiteContent();
+        });
+    </script>
+</body>
+
+</html>

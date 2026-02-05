@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Management - Admin - Import From Nepal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="api-config.js"></script>
+    <style>
+        .sidebar-link {
+            @apply flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-700 transition;
+        }
+        .sidebar-link.active {
+            @apply bg-blue-600 text-white border-l-4 border-orange-500;
+        }
+        .tab-button {
+            @apply px-4 py-2 rounded-t-lg font-semibold transition;
+        }
+        .tab-button.active {
+            @apply bg-blue-600 text-white;
+        }
+        .tab-button.inactive {
+            @apply bg-gray-300 text-gray-700 hover:bg-gray-400;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Top Navigation -->
+    <nav class="bg-gray-900 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-orange-400">
+                    Import From Nepal
+                </h1>
+                <span class="text-gray-400 text-sm">Admin Panel</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <span id="admin-user" class="text-gray-400">Admin</span>
+                <a href="/" class="text-gray-400 hover:text-white transition">View Site</a>
+                <button onclick="logout()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded transition">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-800 min-h-screen shadow-lg">
+            <nav class="pt-4">
+                <a href="dashboard.html" class="sidebar-link dashboard-link">
+                    <span>📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="products.html" class="sidebar-link products-link">
+                    <span>📦</span>
+                    <span>Products</span>
+                </a>
+                <a href="categories.html" class="sidebar-link categories-link">
+                    <span>📂</span>
+                    <span>Categories</span>
+                </a>
+                <a href="orders.html" class="sidebar-link orders-link">
+                    <span>🛒</span>
+                    <span>Orders</span>
+                </a>
+                <a href="content.html" class="sidebar-link content-link active">
+                    <span>✏️</span>
+                    <span>Content</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <h2 class="text-3xl font-bold mb-8 text-gray-800">Content Management</h2>
+
+            <!-- Tabs -->
+            <div class="flex gap-2 mb-6 border-b border-gray-300">
+                <button class="tab-button active" onclick="switchTab('homepage')">Homepage Content</button>
+                <button class="tab-button inactive" onclick="switchTab('products-page')">Products Page</button>
+                <button class="tab-button inactive" onclick="switchTab('contact-page')">Contact Page</button>
+            </div>
+
+            <!-- Homepage Content Tab -->
+            <div id="homepage-tab" class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-2xl font-bold mb-6">Homepage Content Management</h3>
+                
+                <div class="space-y-6">
+                    <!-- Hero Section -->
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h4 class="text-xl font-bold mb-4">Hero Section</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Hero Title</label>
+                                <input type="text" id="hero-title" placeholder="e.g., Discover Authentic Products from Nepal" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Hero Subtitle</label>
+                                <input type="text" id="hero-subtitle" placeholder="e.g., Handcrafted with love, delivered with care" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Hero CTA Button Text</label>
+                                <input type="text" id="hero-cta" placeholder="e.g., Shop Now" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Featured Products Section -->
+                    <div class="border-l-4 border-green-500 pl-4">
+                        <h4 class="text-xl font-bold mb-4">Featured Products Section</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Section Title</label>
+                                <input type="text" id="featured-title" placeholder="e.g., Featured Products" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Section Description</label>
+                                <textarea id="featured-desc" placeholder="Brief description of featured products" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                            </div>
+                            <div>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="featured-enabled" checked class="w-4 h-4">
+                                    <span class="text-sm font-semibold text-gray-700">Show Featured Products Section</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Categories Section -->
+                    <div class="border-l-4 border-purple-500 pl-4">
+                        <h4 class="text-xl font-bold mb-4">Categories Section</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Section Title</label>
+                                <input type="text" id="categories-title" placeholder="e.g., Shop by Category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" id="categories-enabled" checked class="w-4 h-4">
+                                    <span class="text-sm font-semibold text-gray-700">Show Categories Section</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Newsletter Section -->
+                    <div class="border-l-4 border-orange-500 pl-4">
+                        <h4 class="text-xl font-bold mb-4">Newsletter Subscription Section</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Section Title</label>
+                                <input type="text" id="newsletter-title" placeholder="e.g., Join Our Newsletter" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Section Description</label>
+                                <textarea id="newsletter-desc" placeholder="Description text for newsletter signup" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="saveHomepageContent()" class="mt-8 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+                    Save Homepage Content
+                </button>
+            </div>
+
+            <!-- Products Page Tab -->
+            <div id="products-page-tab" class="hidden bg-white rounded-lg shadow p-6">
+                <h3 class="text-2xl font-bold mb-6">Products Page Content Management</h3>
+                
+                <div class="space-y-6">
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h4 class="text-xl font-bold mb-4">Page Header</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Page Title</label>
+                                <input type="text" id="products-page-title" placeholder="e.g., Our Products" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Page Description</label>
+                                <textarea id="products-page-desc" placeholder="Description of products page" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-l-4 border-green-500 pl-4">
+                        <h4 class="text-xl font-bold mb-4">Filter Sidebar Settings</h4>
+                        <div class="space-y-4">
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" id="show-price-filter" checked class="w-4 h-4">
+                                <span class="text-sm font-semibold text-gray-700">Show Price Filter</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" id="show-category-filter" checked class="w-4 h-4">
+                                <span class="text-sm font-semibold text-gray-700">Show Category Filter</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" id="show-search" checked class="w-4 h-4">
+                                <span class="text-sm font-semibold text-gray-700">Show Search Box</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="saveProductsPageContent()" class="mt-8 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+                    Save Products Page Content
+                </button>
+            </div>
+
+            <!-- Contact Page Tab -->
+            <div id="contact-page-tab" class="hidden bg-white rounded-lg shadow p-6">
+                <h3 class="text-2xl font-bold mb-6">Contact Page Content Management</h3>
+                
+                <div class="space-y-6">
+                    <div class="border-l-4 border-blue-500 pl-4">
+                        <h4 class="text-xl font-bold mb-4">Page Header</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Page Title</label>
+                                <input type="text" id="contact-page-title" placeholder="e.g., Get In Touch" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Page Description</label>
+                                <textarea id="contact-page-desc" placeholder="Description for contact page" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-l-4 border-green-500 pl-4">
+                        <h4 class="text-xl font-bold mb-4">Contact Information</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                                <input type="email" id="contact-email" placeholder="contact@importfromnepal.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                                <input type="tel" id="contact-phone" placeholder="+977..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Business Hours</label>
+                                <input type="text" id="contact-hours" placeholder="e.g., Mon-Fri: 9AM-6PM" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="saveContactPageContent()" class="mt-8 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+                    Save Contact Page Content
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-4 right-4 space-y-2 z-50"></div>
+
+    <script>
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `px-4 py-3 rounded shadow-lg text-white ${
+                type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-blue-600'
+            }`;
+            toast.textContent = message;
+            document.getElementById('toast-container').appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('admin_token');
+                window.location.href = '/admin/login.html';
+            }
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.getElementById('homepage-tab').classList.add('hidden');
+            document.getElementById('products-page-tab').classList.add('hidden');
+            document.getElementById('contact-page-tab').classList.add('hidden');
+
+            // Update button styles
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('inactive');
+            });
+
+            // Show selected tab
+            if (tabName === 'homepage') {
+                document.getElementById('homepage-tab').classList.remove('hidden');
+                document.querySelectorAll('.tab-button')[0].classList.add('active');
+            } else if (tabName === 'products-page') {
+                document.getElementById('products-page-tab').classList.remove('hidden');
+                document.querySelectorAll('.tab-button')[1].classList.add('active');
+            } else if (tabName === 'contact-page') {
+                document.getElementById('contact-page-tab').classList.remove('hidden');
+                document.querySelectorAll('.tab-button')[2].classList.add('active');
+            }
+        }
+
+        function loadContentFromStorage() {
+            const content = JSON.parse(localStorage.getItem('site_content') || '{}');
+            
+            // Load homepage content
+            if (content.homepage) {
+                document.getElementById('hero-title').value = content.homepage.heroTitle || '';
+                document.getElementById('hero-subtitle').value = content.homepage.heroSubtitle || '';
+                document.getElementById('hero-cta').value = content.homepage.heroCta || '';
+                document.getElementById('featured-title').value = content.homepage.featuredTitle || '';
+                document.getElementById('featured-desc').value = content.homepage.featuredDesc || '';
+                document.getElementById('featured-enabled').checked = content.homepage.featuredEnabled !== false;
+                document.getElementById('categories-title').value = content.homepage.categoriesTitle || '';
+                document.getElementById('categories-enabled').checked = content.homepage.categoriesEnabled !== false;
+                document.getElementById('newsletter-title').value = content.homepage.newsletterTitle || '';
+                document.getElementById('newsletter-desc').value = content.homepage.newsletterDesc || '';
+            }
+
+            // Load products page content
+            if (content.productsPage) {
+                document.getElementById('products-page-title').value = content.productsPage.pageTitle || '';
+                document.getElementById('products-page-desc').value = content.productsPage.pageDesc || '';
+                document.getElementById('show-price-filter').checked = content.productsPage.showPriceFilter !== false;
+                document.getElementById('show-category-filter').checked = content.productsPage.showCategoryFilter !== false;
+                document.getElementById('show-search').checked = content.productsPage.showSearch !== false;
+            }
+
+            // Load contact page content
+            if (content.contactPage) {
+                document.getElementById('contact-page-title').value = content.contactPage.pageTitle || '';
+                document.getElementById('contact-page-desc').value = content.contactPage.pageDesc || '';
+                document.getElementById('contact-email').value = content.contactPage.email || '';
+                document.getElementById('contact-phone').value = content.contactPage.phone || '';
+                document.getElementById('contact-hours').value = content.contactPage.hours || '';
+            }
+        }
+
+        function saveHomepageContent() {
+            const content = JSON.parse(localStorage.getItem('site_content') || '{}');
+            
+            content.homepage = {
+                heroTitle: document.getElementById('hero-title').value,
+                heroSubtitle: document.getElementById('hero-subtitle').value,
+                heroCta: document.getElementById('hero-cta').value,
+                featuredTitle: document.getElementById('featured-title').value,
+                featuredDesc: document.getElementById('featured-desc').value,
+                featuredEnabled: document.getElementById('featured-enabled').checked,
+                categoriesTitle: document.getElementById('categories-title').value,
+                categoriesEnabled: document.getElementById('categories-enabled').checked,
+                newsletterTitle: document.getElementById('newsletter-title').value,
+                newsletterDesc: document.getElementById('newsletter-desc').value
+            };
+
+            localStorage.setItem('site_content', JSON.stringify(content));
+            showToast('Homepage content saved successfully');
+        }
+
+        function saveProductsPageContent() {
+            const content = JSON.parse(localStorage.getItem('site_content') || '{}');
+            
+            content.productsPage = {
+                pageTitle: document.getElementById('products-page-title').value,
+                pageDesc: document.getElementById('products-page-desc').value,
+                showPriceFilter: document.getElementById('show-price-filter').checked,
+                showCategoryFilter: document.getElementById('show-category-filter').checked,
+                showSearch: document.getElementById('show-search').checked
+            };
+
+            localStorage.setItem('site_content', JSON.stringify(content));
+            showToast('Products page content saved successfully');
+        }
+
+        function saveContactPageContent() {
+            const content = JSON.parse(localStorage.getItem('site_content') || '{}');
+            
+            content.contactPage = {
+                pageTitle: document.getElementById('contact-page-title').value,
+                pageDesc: document.getElementById('contact-page-desc').value,
+                email: document.getElementById('contact-email').value,
+                phone: document.getElementById('contact-phone').value,
+                hours: document.getElementById('contact-hours').value
+            };
+
+            localStorage.setItem('site_content', JSON.stringify(content));
+            showToast('Contact page content saved successfully');
+        }
+
+        window.addEventListener('DOMContentLoaded', loadContentFromStorage);
+    </script>
+</body>
+</html>

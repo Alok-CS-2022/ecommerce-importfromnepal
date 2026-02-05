@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Import From Nepal</title>
+    
+    <!-- Meta Tags --
+    <meta name="description" content="Complete your order on Import From Nepal. Fast, secure checkout with multiple payment options.">
+    <meta name="keywords" content="checkout, order, shopping">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- Load App -->
+    <script type="module" src="js/app.js?v=5"></script>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm fixed w-full z-50 top-0 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-orange-500">
+                        Import From Nepal
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-700 hover:text-blue-600 transition">Home</a>
+                    <a href="products.html" class="text-gray-700 hover:text-blue-600 transition">Shop</a>
+                    <a href="contact.html" class="text-gray-700 hover:text-blue-600 transition">Contact</a>
+                </div>
+
+                <!-- Cart & Mobile Menu -->
+                <div class="flex items-center space-x-4">
+                    <!-- Cart Icon -->
+                    <button onclick="openCart()" class="relative p-2 hover:bg-gray-100 rounded-lg transition">
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                        <span id="cart-count"
+                            class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">0</span>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-3 space-y-3">
+                <a href="index.html" class="block py-2 text-gray-700 hover:text-blue-600 transition">Home</a>
+                <a href="products.html" class="block py-2 text-gray-700 hover:text-blue-600 transition">Shop</a>
+                <a href="contact.html" class="block py-2 text-gray-700 hover:text-blue-600 transition">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="pt-24 pb-12 px-4 bg-gradient-to-r from-blue-50 to-orange-50">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+                Complete Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-orange-500">Order</span>
+            </h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Fill in your details and review your items before checkout
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Order Form Column -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-8">Order Information</h2>
+
+                    <form id="order-form" class="space-y-6">
+                        <!-- Personal Information -->
+                        <div class="border-b pb-8">
+                            <h3 class="text-lg font-medium text-gray-900 mb-4">Personal Details</h3>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Full Name <span class="text-red-600">*</span>
+                                    </label>
+                                    <input type="text" name="customer_name" required
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
+                                        placeholder="Enter your full name">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Email Address <span class="text-red-600">*</span>
+                                    </label>
+                                    <input type="email" name="customer_email" required
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
+                                        placeholder="you@example.com">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shipping Information -->
+                        <div class="border-b pb-8">
+                            <h3 class="text-lg font-medium text-gray-900 mb-4">Shipping Details</h3>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Phone Number <span class="text-red-600">*</span>
+                                    </label>
+                                    <input type="tel" name="customer_phone" required
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
+                                        placeholder="+1 (555) 000-0000">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Country <span class="text-red-600">*</span>
+                                    </label>
+                                    <select name="customer_country" required
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition">
+                                        <option value="">Select a country</option>
+                                        <option value="United States">United States</option>
+                                        <option value="Canada">Canada</option>
+                                        <option value="United Kingdom">United Kingdom</option>
+                                        <option value="Australia">Australia</option>
+                                        <option value="Germany">Germany</option>
+                                        <option value="France">France</option>
+                                        <option value="Italy">Italy</option>
+                                        <option value="Spain">Spain</option>
+                                        <option value="Japan">Japan</option>
+                                        <option value="India">India</option>
+                                        <option value="Nepal">Nepal</option>
+                                        <option value="China">China</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Street Address <span class="text-red-600">*</span>
+                                </label>
+                                <input type="text" name="customer_address" required
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
+                                    placeholder="123 Main Street">
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">City</label>
+                                    <input type="text" name="customer_city" 
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
+                                        placeholder="City">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">State/Province</label>
+                                    <input type="text" name="customer_state" 
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
+                                        placeholder="State">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">ZIP/Postal Code</label>
+                                    <input type="text" name="customer_zip" 
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
+                                        placeholder="12345">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Special Requests -->
+                        <div class="pb-8">
+                            <h3 class="text-lg font-medium text-gray-900 mb-4">Additional Notes</h3>
+                            <textarea name="special_requests" rows="4"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition resize-none"
+                                placeholder="Any special requests or messages?"></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" 
+                            class="w-full bg-amber-700 text-white py-4 rounded-lg font-semibold text-lg hover:bg-amber-800 transition shadow-lg">
+                            Place Order
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Order Summary Column -->
+            <div class="lg:col-span-1">
+                <!-- Cart Items Summary -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Order Summary</h2>
+                    
+                    <div id="order-items-summary" class="space-y-4 mb-6 max-h-96 overflow-y-auto">
+                        <p class="text-gray-500 text-center py-4">Your cart items will appear here</p>
+                    </div>
+
+                    <!-- Pricing Summary -->
+                    <div class="border-t pt-6 space-y-3">
+                        <div class="flex justify-between text-gray-700">
+                            <span>Subtotal</span>
+                            <span id="subtotal-price" class="font-semibold">$0.00</span>
+                        </div>
+
+                        <div class="flex justify-between text-gray-700">
+                            <span>Shipping (Estimate)</span>
+                            <span id="shipping-price" class="font-semibold">$0.00</span>
+                        </div>
+
+                        <div class="flex justify-between text-gray-700">
+                            <span>Tax (Estimate)</span>
+                            <span id="tax-price" class="font-semibold">$0.00</span>
+                        </div>
+
+                        <div class="border-t pt-3 flex justify-between items-center">
+                            <span class="text-lg font-bold text-gray-900">Total</span>
+                            <span id="total-price" class="text-2xl font-bold text-amber-700">$0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Continue Shopping Button -->
+                    <button onclick="window.location.href='products.html'" 
+                        class="w-full mt-6 py-3 border-2 border-amber-700 text-amber-700 rounded-lg font-semibold hover:bg-amber-50 transition">
+                        Continue Shopping
+                    </button>
+                </div>
+
+                <!-- Order Tracker -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 mt-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-6">Order Status Tracker</h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Step 1 -->
+                        <div class="flex items-start">
+                            <div class="flex flex-col items-center mr-4">
+                                <div class="w-8 h-8 rounded-full bg-amber-700 text-white flex items-center justify-center text-sm font-bold">1</div>
+                                <div class="w-0.5 h-12 bg-gray-300 mt-2"></div>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Order Confirmation</p>
+                                <p class="text-sm text-gray-600">Your order is placed</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="flex items-start">
+                            <div class="flex flex-col items-center mr-4">
+                                <div class="w-8 h-8 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-bold">2</div>
+                                <div class="w-0.5 h-12 bg-gray-300 mt-2"></div>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Processing</p>
+                                <p class="text-sm text-gray-600">We prepare your items</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="flex items-start">
+                            <div class="flex flex-col items-center mr-4">
+                                <div class="w-0.5 h-12 bg-gray-300 mb-2"></div>
+                                <div class="w-8 h-8 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-bold">3</div>
+                                <div class="w-0.5 h-12 bg-gray-300 mt-2"></div>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Shipped</p>
+                                <p class="text-sm text-gray-600">Your package is on the way</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="flex items-start">
+                            <div class="flex flex-col items-center mr-4">
+                                <div class="w-0.5 h-12 bg-gray-300 mb-2"></div>
+                                <div class="w-8 h-8 rounded-full bg-gray-300 text-gray-600 flex items-center justify-center text-sm font-bold">4</div>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900">Delivered</p>
+                                <p class="text-sm text-gray-600">Your order has arrived</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-xs text-gray-500 mt-6 text-center">
+                        You'll receive email updates at each stage
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black bg-opacity-50" onclick="closeCart()"></div>
+        <div class="bg-white rounded-2xl w-full md:max-w-md max-h-96 overflow-hidden shadow-2xl relative">
+            <div class="sticky top-0 bg-gradient-to-r from-amber-700 to-amber-800 p-4 text-white flex justify-between items-center">
+                <h3 class="font-semibold text-lg">Shopping Cart</h3>
+                <button onclick="closeCart()" class="text-white/70 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="cart-items" class="p-4 max-h-64 overflow-y-auto">
+                <!-- Cart items will be populated here -->
+            </div>
+            <div class="border-t p-4 bg-gray-50">
+                <div class="flex justify-between items-center mb-4 font-semibold">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal" class="text-amber-700 text-lg">$0.00</span>
+                </div>
+                <button onclick="closeCart()" class="w-full bg-amber-700 text-white py-2 rounded-lg font-medium hover:bg-amber-800 transition">
+                    Continue Ordering
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-amber-500">Import From Nepal</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Bringing authentic Himalayan handicrafts to the world.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-6">Quick Links</h3>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="index.html" class="hover:text-amber-500 transition">Home</a></li>
+                        <li><a href="products.html" class="hover:text-amber-500 transition">Products</a></li>
+                        <li><a href="contact.html" class="hover:text-amber-500 transition">Contact</a></li>
+                        <li><a href="order.html" class="hover:text-amber-500 transition">Track Order</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-6">Customer Service</h3>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li><a href="#" class="hover:text-amber-500 transition">Shipping Policy</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition">Return & Refund</a></li>
+                        <li><a href="#" class="hover:text-amber-500 transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+                <p class="text-gray-400 text-sm text-center">&copy; 2025 Import From Nepal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Order Script -->
+    <script type="module" src="js/order.js"></script>
+</body>
+
+</html>
