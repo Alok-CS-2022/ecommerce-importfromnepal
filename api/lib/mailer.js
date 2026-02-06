@@ -1,7 +1,8 @@
 import { Resend } from 'resend';
 
 // Initialize Resend with API key from environment variable
-const resend = new Resend(process.env.RESEND_API_KEY);
+// const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend('re_ANbBMVzW_5etBpjnXcRuK9bw6Yaw1mvXm');
 
 /**
  * Send order confirmation email to admins
