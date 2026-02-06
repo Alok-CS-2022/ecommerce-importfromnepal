@@ -10,16 +10,15 @@ export default async function handler(req, res) {
         return res.status(200).end();
     }
 
-    // auth checks removed
-
-    // 2. HANDLE ORDERS
-
-    // 2. HANDLE ORDERS
     // Lazy import mailer to avoid circular deps
-    let sendOrderEmail;
+    let sendOrderEmail, formatOrderEmailHTML;
     try {
-        sendOrderEmail = (await import('../lib/mailer.js')).sendOrderEmail;
-    } catch (e) {}
+        const mailer = await import('../lib/mailer.js');
+        sendOrderEmail = mailer.sendOrderEmail;
+        formatOrderEmailHTML = mailer.formatOrderEmailHTML;
+    } catch (e) {
+        console.error('Could not load mailer:', e);
+    }
 
     try {
         switch (req.method) {
@@ -34,20 +33,36 @@ export default async function handler(req, res) {
             case 'POST': {
                 // Insert new order and send email
                 const order = req.body;
+                console.log('Creating order:', order);
+                
                 const { data, error } = await supabase.from('orders').insert([order]).select().single();
                 if (error) throw error;
+                
+                console.log('✓ Order created successfully:', data);
+                
                 // Send email to admins
-                if (sendOrderEmail) {
-                    const orderJson = JSON.stringify(data, null, 2);
-                    await sendOrderEmail({
-                        to: ['alok.kharel.nepal@gmail.com', 'sujanadhikari1111@gmail.com'],
-                        subject: 'New Order Received',
-                        text: 'A new order has been placed. See attached for details.',
-                        html: '<p>A new order has been placed. See attached for details.</p>',
-                        attachmentName: `order-${data.id}.json`,
-                        attachmentContent: orderJson
-                    });
+                if (sendOrderEmail && formatOrderEmailHTML) {
+                    try {
+                        const htmlContent = formatOrderEmailHTML(data);
+                        const orderJson = JSON.stringify(data, null, 2);
+                        
+                        await sendOrderEmail({
+                            to: ['alok.kharel.nepal@gmail.com', 'sujanadhikari1111@gmail.com'],
+                            subject: `🎉 New Order #${String(data.id).substring(0, 8)} - ${data.customer_name}`,
+                            text: `New order received from ${data.customer_name} (${data.customer_email}). Total: $${data.total_amount}`,
+                            html: htmlContent,
+                            attachmentName: `order-${data.id}.json`,
+                            attachmentContent: orderJson
+                        });
+                        console.log('✓ Order email sent to admins');
+                    } catch (emailError) {
+                        console.error('⚠️ Email sending failed (order still created):', emailError);
+                        // Don't throw - order was created successfully
+                    }
+                } else {
+                    console.warn('⚠️ Mailer not available - email not sent');
                 }
+                
                 return res.status(201).json(data);
             }
             case 'PUT': {
